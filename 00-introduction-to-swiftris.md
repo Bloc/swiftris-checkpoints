@@ -6,7 +6,7 @@ In all seriousness, this is a Tetris clone written in Swift for the iOS platform
 
 <center>![Alexey Pajitnov](http://bloc-global-assets.s3.amazonaws.com/screencaps/alexey.jpg)</center>
 
-Before we starting playing with blocks, you should know the tools we'll be using: Swift, SpriteKit and Xcode.
+Before we start playing with blocks, you should know the tools we'll be using: Swift, SpriteKit and Xcode.
 
 ### Swift
 
