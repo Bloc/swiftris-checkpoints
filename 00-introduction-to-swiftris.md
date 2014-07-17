@@ -16,4 +16,8 @@ If you are not a programmer, *do not worry.* Regardless of skill level, you will
 
 SpriteKit is a set of APIs provided by the iOS SDK which allow native 2D game development from within Xcode itself. Swiftris is powered by SpriteKit and therefore no additional libraries or 3rd party tools will be required to build this great game.
 
-Speaking of Xcode…
+### Xcode
+
+As of the writing of this Bloc Book, Xcode 6 Beta 3 is the latest version required for Swift compilation. Unfortunately this version of Xcode is not publicly available yet, unless you are a member of the [iOS Developer Program](https://developer.apple.com/programs/ios/). We think the $99 annual fee is wholly worthwhile. If you are a member of the program, you can download the latest version of the Xcode Beta in [your developer portal.](https://developer.apple.com/devcenter/ios/index.action).
+
+Once you have Xcode downloaded and installed, you're ready to move to the next chapter.
