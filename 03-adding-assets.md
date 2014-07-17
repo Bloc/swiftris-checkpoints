@@ -1,3 +1,5 @@
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-final.png)</center>
+
 ## Adding Assets
 
 Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building *Swiftris,* we must unceremoniously delete every unnecessary file provided to us by Xcode.
@@ -129,8 +131,60 @@ class GameViewController: UIViewController {
 
 ### The Sights And Sounds Of Swiftris
 
-In order to experience *Swiftris* in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets]() to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive, perform a drag-and-drop action of the `Sounds` folder right above `Supporting Files` in Xcode's Project Navigator. The following window should appear:
+In order to experience *Swiftris* in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-copy-if-necessary.png)</center>
 
-Make sure to check the **Copy items if necessary** option. This will place a copy of the directory and all of the sound files within it into your Swiftris project and directory. Repeat this task with the `Sprites.atlas` folder. Next, select all of the images found within the `Images` directory and drag them into the `Supporting Files` folder found in Project Navigator, again make sure the items get copied.
+Make sure to check the **Copy items if necessary** option. This will place a copy of the directory and all of the sound files within it into your Swiftris project and directory. Repeat this task with the `Sprites.atlas` folder. Next, select all of the images found within the `Images` directory and drag them into the `Supporting Files` folder found in Project Navigator making sure the images are copied. Finally, go back into the `Images.xcassets` window and highlight `AppIcon`. Drag and drop the appropriate `icon` file into its respective slot, 29pt, 40pt and 60pt.
+
+All this dragging and dropping has my clickin' hand beat, let's just code already…
+
+### Start At The Back
+
+We're going to put those new background images to work. We'll begin by establishing `GameScene` inside of `GameViewController`. `GameScene` will be responsible for displaying everything for Swiftris, it will render the tetrominos on screen, the background as well as the game board. Furthermore, `GameScene` will be responsible for playing the sounds and keeping track of the time.
+
+`GameViewController` on the other hand will be responsible for handling user input and communicating between `GameScene` and a game logic class you'll be writing soon.
+
+>If you're working with Swift for the first time, we highly encourage you to type each line by hand in order to get a feel for the language in your fingers… it sounds dirty but it's good for you.
+
+
+```ruby(GameScene.swift)
++init(size: CGSize) {
++    super.init(size: size)
+    
++    anchorPoint = CGPoint(x: 0, y: 1.0)
+    
++    let background = SKSpriteNode(imageNamed: "background")
++    background.position = CGPoint(x: 0, y: 0)
++    background.anchorPoint = CGPoint(x: 0, y: 1.0)
++    addChild(background)
++}
+```
+
+SpriteKit is based on OpenGL and therefore its coordinate system is opposite to iOS' native cocoa coordinates. `0, 0` in SpriteKit is the bottom-left corner, Swiftris will be drawn from the top down so therefore we anchor our game in the top-left corner of the screen, `0, 1.0`. We then create an `SKSpriteNode` capable of representing our background image and we add it to the scene.
+
+>`background` is the variable's name, its type is inferred to be that of `SKSpriteNode` and the keyword `let` indicates that it can not be re-assigned. `let` is akin to Java's `final`.
+
+```ruby(GameViewController.swift)
++var scene: GameScene!
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+    
++    // Configure the view.
++    let skView = view as SKView
++    skView.multipleTouchEnabled = false
+    
++    // Create and configure the scene.
++    scene = GameScene(size: skView.bounds.size)
++    scene.scaleMode = .AspectFill
+    
++    // Present the scene.
++    skView.presentScene(scene)
+}
+```
+
+In `GameViewController` we've added a member variable, `scene`. Its declaration, `var scene: GameScene!` lets us know that it is a variable, its name is `scene`, its of type `GameScene` and it is a non-optional value which will *eventually* be instantiated. Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. In order to circumvent this requirement we've added an `!` after the type.
+
+In `viewDidLoad()` we assign `scene` as promised, using the initializer we had just written moments ago. We tell it to fill the screen and then ask our view to present that scene to the user. Run Swiftris and you should see a super cool background appear. Not titillating enough for you? Read on for to continue the fun.
+
