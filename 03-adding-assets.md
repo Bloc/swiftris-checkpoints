@@ -186,5 +186,5 @@ override func viewDidLoad() {
 
 In `GameViewController` we've added a member variable, `scene`. Its declaration, `var scene: GameScene!` lets us know that it is a variable, its name is `scene`, its of type `GameScene` and it is a non-optional value which will *eventually* be instantiated. Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. In order to circumvent this requirement we've added an `!` after the type.
 
-In `viewDidLoad()` we assign `scene` as promised, using the initializer we had just written moments ago. We tell it to fill the screen and then ask our view to present that scene to the user. Run Swiftris and you should see a super cool background appear. Not titillating enough for you? Read on for to continue the fun.
+In `viewDidLoad()` we assign `scene` as promised, using the initializer we had just written moments ago. We tell it to fill the screen and then ask our view to present that scene to the user. Run Swiftris and you should see a super cool background appear. Not titillating enough for you? Read on to continue the fun.
 
