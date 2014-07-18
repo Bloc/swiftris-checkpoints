@@ -34,9 +34,9 @@ Choose **Swift** and press **Next**. Name the file, `Array2D` and click **Create
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/04-array-we-go-save-new-file.png)</center>
 
-The file should automatically open in your editing window. Replace the generated content with the following:
+The file should automatically open in the editing window. Replace the generated content with the following:
 
-```ruby(Array2D.swift)
+```objc(Array2D.swift)
 -import Foundation
 
 // #1
@@ -65,15 +65,21 @@ The file should automatically open in your editing window. Replace the generated
 +}
 ```
 
-Let's briefly discuss what this class helps us accomplish. At `#1` we're defining a class named `Array2D`. Generic arrays in Swift are actually of type `struct`, not `class` but we need a class in this case since class objects are passed by reference whereas structures are passed by value (copied). Our game logic will require a single copy of this data structure to persist across the entire game. If this doesn't make any sense to you, [read about Swift classes](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/ClassesAndStructures.html).
+Let's briefly discuss what this class helps us accomplish. At `#1` we're defining a class named `Array2D`. Generic arrays in Swift are actually of type `struct`, not `class` but we need a class in this case since class objects are passed by reference whereas structures are passed by value (copied). Our game logic will require a single copy of this data structure to persist across the entire game.
+
+[For a more thorough explanation of Swift classes, check this out.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/ClassesAndStructures.html).
 
 Notice that in the class' declaration we provide a typed parameter: `<T>`. This allows our array to store any type of data and therefore remain a general-purpose tool.
 
 At `#2` we declare an actual Swift array; it will be the underlying data structure which maintains references to our objects. It's declared with type `<T?>`. A `?` in Swift symbolizes an *optional value.* An optional value is just that, optional. Optional variables may or may not contain data, and they may in fact be `nil`, or empty. `nil` locations found on our game board will represent empty spots where no block is present.
 
-During our initialization at `#3`, we instantiate our internal `array` structure with a size of `rows * columns`. This guarantees that `Array2D` can store as many objects as our game board requires, 200 in our case. If you're yearning for more detailed information on arrays, [read the Swift docs](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/CollectionTypes.html).
+During our initialization at `#3`, we instantiate our internal `array` structure with a size of `rows * columns`. This guarantees that `Array2D` can store as many objects as our game board requires, 200 in our case.
 
-And finally, at `4#` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination. If you'd like more detail on subscripting, [read the Swift docs](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Subscripts.html).
+[Go here if you're yearning for more about Swift arrays.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html).
+
+And finally, at `4#` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
+
+[More detail on subscripting.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Subscripts.html).
 
 The setter is the reverse operation of that; `newValue` is assigned to the location determined by the same algorithm found in the custom getter.
 
