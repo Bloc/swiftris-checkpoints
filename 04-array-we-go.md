@@ -53,7 +53,7 @@ The file should automatically open in your editing window. Replace the generated
 +        array = Array<T?>(count:rows * columns, repeatedValue: nil)
 +    }
 
- // #4
+// #4
 +    subscript(column: Int, row: Int) -> T? {
 +        get {
 +            return array[(row * columns) + column]
