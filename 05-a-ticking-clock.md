@@ -13,12 +13,12 @@ Let's take advantage of the `update` method to discover if and when a time inter
 ```obj-c(GameScene.swift)
 import SpriteKit
 
-+// #1
+// #1
 +let TickLengthLevelOne = NSTimeInterval(600)
 
 class GameScene: SKScene {
 
-+// #2
+// #2
 +    var tick:(() -> ())?
 +    var tickLengthMillis = TickLengthLevelOne
 +    var lastTick:NSDate?
@@ -36,7 +36,7 @@ class GameScene: SKScene {
 
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-+// #3
+// #3
 +        if lastTick == nil {
 +            return
 +        }
@@ -47,7 +47,7 @@ class GameScene: SKScene {
 +        }
     }
 
-+// #4
+// #4
 +    func startTicking() {
 +        lastTick = NSDate.date()
 +    }
