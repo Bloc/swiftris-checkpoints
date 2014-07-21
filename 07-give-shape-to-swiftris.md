@@ -116,6 +116,10 @@ Let's write the shape class itself, shall we?
 +        self.init(column:column, row:row, color:BlockColor.random(), orientation:Orientation.random())
 +    }
 +}
+
++func ==(lhs: Shape, rhs: Shape) -> Bool {
++    return lhs.row == rhs.row && lhs.column == rhs.column
++}
 ```
 
 Your project won't compile at the moment and you will certainly see some errors, don't worry about that we'll get it fixed soon. Both **#1** and **#2** introduce some Swift tools that you'll certainly be interested in. First and foremost we have written these two computed properties and left their results empty. This was done on purpose such that our actual shape classes will `override` them in their respective classes. You'll see what we mean shortly.
@@ -164,6 +168,10 @@ Your `Shape` class is still experiencing some build errors, let's get to fixing 
 +            }
 +        }
 +    }
+}
+
+func ==(lhs: Shape, rhs: Shape) -> Bool {
+    return lhs.row == rhs.row && lhs.column == rhs.column
 }
 ```
 
