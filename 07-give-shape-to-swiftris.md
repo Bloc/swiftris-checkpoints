@@ -1,6 +1,8 @@
 > “The object of art is to give life shape“<br>
 > -- William Shakespeare
 
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-tetronimoes.png)</center>
+
 ## Shaping Up
 
 Without shape, our blocks are aimless colored squares longing for purpose in their short-lived binary lives. Let's put them to use by creating a `Shape` class. `Shape` will define the recognizable [Tetromino](http://en.wikipedia.org/wiki/Tetromino) pieces we all know and love. You know the drill; create a new file named `Shape.swift` and replace its contents with the following:
@@ -53,7 +55,7 @@ At 0˚ the piece is at origin and as it rotates clockwise its degree advances al
 Let's write the shape class itself, shall we?
 
 ```objc(Shape.swift)
-+// The number of total shape varieities
++// The number of total shape varieties
 +let NumShapeTypes: UInt32 = 7
 
 +// Shape indexes
@@ -122,7 +124,7 @@ Let's write the shape class itself, shall we?
 +}
 ```
 
-Your project won't compile at the moment and you will certainly see some errors, but we'll get it fixed soon. Both **#1** and **#2** introduce some Swift tools that you'll certainly be interested in. First and foremost we have written these two computed properties and left their results empty. This was done on purpose such that our actual shape classes will `override` them in their respective classes. You'll see what we mean shortly.
+Your project won't compile at the moment and you will certainly see some errors, but we'll get it fixed soon. Both **#1** and **#2** introduce some Swift tools that you'll certainly be interested in. First and foremost we have written these two computed properties and left their results empty. This was done on purpose such that our actual shape classes will `override` them in their respective implementations. You'll see what we mean shortly.
 
 **#1**, `blockRowColumnPositions` defines a computed **Dictionary**. A dictionary is defined with square braces – `[…]` – and maps one type of object to another. The first object type listed defines the **key** and the second, a **value**. Keys map one-to-one with values and multiple copies of a single key may not exist.
 
@@ -130,14 +132,14 @@ Your project won't compile at the moment and you will certainly see some errors,
 
 We access dictionary values similarly to those of an array by employing square braces. However, our indices are now of type **key**, and therefore in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
 
-It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is perfect tool to pass or return multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
+It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is a perfect for passing or returning multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
 
 ```objc
 let arrayOfDiffs = blockRowColumnPositions[Orientation.0]!
 let columnDifference = arrayOfDiffs[0].columnDiff
 ```
 
-Elements found within a dictionary are optional by default, therefore we have dereferenced it using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
+Elements found within a dictionary are optional by default, therefore we must dereference them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
 
 [Can't get enough of tuples? We know that feeling.](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Types.html)
 
@@ -190,9 +192,12 @@ if blockRowColumnTranslations != nil {
 
 ### Subclasses
 
-You've written a solid `Shape` class, yet it hasn't truly defined any possible Tetrominos for us to play with. `Shape` is merely a generic tool meant to support an infinite number of shapes. Let's define the seven shapes which Swiftris will allow. *Create* and *code* the following subclass of `Shape`: `SquareShape`:
+You've written a solid `Shape` class, yet it hasn't truly defined any possible Tetrominoes for us to play with. `Shape` is merely a generic tool meant to support an infinite number of shapes. Let's define the seven shapes which Swiftris will allow. *Create* and *code* the following subclass of `Shape`: `SquareShape`:
+
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-square.png)</center>
 
 ```objc(SquareShape.swift)
+-import Foundation
 +class SquareShape:Shape {
 +    /*
 // #1
@@ -227,13 +232,15 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 +}
 ```
 
-Thanks to the `Shape` class, defining shapes with subclasses has become a simple task -- we just provide the differential of block locations from a given `row` and `column` with respect to the shape's rotation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Furthermore, its bottom blocks will always be the third and fourth block as defined by the comments at **#1**.
+Thanks to the `Shape` class, defining Tetrominoes with a subclass is fairly trivial -- we just provide the differential of block locations from a given `row` and `column` with respect to the shape's rotation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Furthermore, its bottom blocks will always be the third and fourth block as defined by the comments at **#1**.
 
 At **#2** we've overridden the `blockRowColumnPositions` computed property to provide a full dictionary of tuple arrays. Each index of the arrays represents one of the four blocks ordered from block `0` to block `3`. For example, with a square shape the top-left – block `0` – block location is exactly identical to the shape's `row` and `column` location. Therefore the tuple is `(0, 0)`, `0` column difference and `0` row difference. The second block is always `1` column to the right of the shape's given `column` value, therefore its tuple is always `(1, 0)`.
 
 Finally, at **#3** we perform a similar `override` by providing a dictionary of bottom block arrays. As was stated earlier, a square shape does not rotate, therefore its bottom-most blocks are consistently the third and fourth blocks as indicated by the comments at **#1**.
 
-You have the opportunity to write the remaining shapes yourself, they are: `TShape`, `LineShape`, `ZigZagOneShape`, `ZigZagTwoShape`, `LOneShape` and `LTwoShape`. Or… you can read on and copy the remaining shapes into your project, try it yourself for a fun challenge. You can always come back and use our versions if you like.
+You have the opportunity to write the remaining shapes yourself, they are: `TShape`, `LineShape`, `SShape`, `ZShape`, `LShape` and `JShape`. Or… you can read on and copy the remaining shapes into your project, try it yourself for a fun challenge. You can always come back and use our versions if you like.
+
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-t.png)</center>
 
 ```objc(TShape.swift)
 class TShape:Shape {
@@ -285,6 +292,8 @@ class TShape:Shape {
 }
 ```
 
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-line.png)</center>
+
 ```objc(LineShape.swift)
 class LineShape:Shape {
     /*
@@ -324,6 +333,8 @@ class LineShape:Shape {
     }
 }
 ```
+
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-l.png)</center>
 
 ```objc(LOneShape.swift)
 class LOneShape:Shape {
@@ -378,8 +389,10 @@ class LOneShape:Shape {
 }
 ```
 
-```objc(LTwoShape.swift)
-class LTwoShape:Shape {
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-j.png)</center>
+
+```objc(JShape.swift)
+class JShape:Shape {
     /*
 
     Orientation 0
@@ -430,7 +443,9 @@ class LTwoShape:Shape {
 }
 ```
 
-```objc(ZigZagOneShape.swift)
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-s.png)</center>
+
+```objc(SShape.swift)
 class ZigZagOneShape:Shape {
     /*
 
@@ -480,7 +495,9 @@ class ZigZagOneShape:Shape {
 }
 ```
 
-```objc(ZigZagTwoShape.swift)
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-z.png)</center>
+
+```objc(ZShape.swift)
 class ZigZagTwoShape:Shape {
     /*
 
