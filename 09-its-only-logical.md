@@ -1,6 +1,8 @@
-<center>![](http://bloc-books.s3.amazonaws.com/swiftris/09-its-only-logical-teaser.gif)</center>
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/09-its-only-logical-final.gif)</center>
 
 ## It's Only Logical…
+
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/09-its-only-logical-teaser.gif)</center>
 
 Even a game as seemingly quaint as Swiftris abides by a complex set of rules. Start considering all of the possibilities which must be accounted for by our game: blocks may not collide, blocks must not fall further than the game board or exceed its column boundaries, points are earned for each line formed, remaining blocks must fall after lines beneath them have been removed, the list goes on.
 
