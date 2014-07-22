@@ -60,13 +60,13 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
 +        case 2:
 +            return TShape(column:startingColumn, row:startingRow)
 +        case 3:
-+            return LOneShape(column:startingColumn, row:startingRow)
++            return LShape(column:startingColumn, row:startingRow)
 +        case 4:
-+            return ZigZagOneShape(column:startingColumn, row:startingRow)
++            return JShape(column:startingColumn, row:startingRow)
 +        case 5:
-+            return LTwoShape(column:startingColumn, row:startingRow)
++            return SShape(column:startingColumn, row:startingRow)
 +        default:
-+            return ZigZagTwoShape(column:startingColumn, row:startingRow)
++            return ZShape(column:startingColumn, row:startingRow)
 +        }
 +    }
 ```
@@ -122,7 +122,7 @@ We'll need a class that manages Swiftris' game logic, the brains behind the enti
 
 `Swiftris` looks simple for now, but don't worry, things will get messy soon. For now, `Swiftris` maintains a handful of important constants and a couple methods which `GameViewController` will find useful. At **#1** we've defined the total number of rows and columns on the game board, the location of where each piece starts and the location of where the preview piece belongs.
 
-At **#2**, we have a method which assigns `nextShape`, whic our preview shape,  as `fallingShape`. This is the moving Tetromino and creates another one before moving `fallingShape` to the starting row and column. This method returns a tuple of optional `Shape` objects - we'll see why in a later checkpoint.
+At **#2**, we have a method which assigns `nextShape`, our preview shape,  as `fallingShape`. `fallingShape`  is the moving Tetromino. `newShape()` then creates a new preview shape before moving `fallingShape` to the starting row and column. This method returns a tuple of optional `Shape` objects - we'll see why in a later checkpoint.
 
 It's time to work with visuals again, let's dig into precisely how we're going to display these pieces on screen by adding a few methods to `GameScene.swift`
 
