@@ -336,8 +336,8 @@ class LineShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-l.png)</center>
 
-```objc(LOneShape.swift)
-class LOneShape:Shape {
+```objc(LShape.swift)
+class LShape:Shape {
     /*
 
     Orientation 0
@@ -446,7 +446,7 @@ class JShape:Shape {
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-s.png)</center>
 
 ```objc(SShape.swift)
-class ZigZagOneShape:Shape {
+class SShape:Shape {
     /*
 
     Orientation 0
@@ -498,7 +498,7 @@ class ZigZagOneShape:Shape {
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-z.png)</center>
 
 ```objc(ZShape.swift)
-class ZigZagTwoShape:Shape {
+class ZShape:Shape {
     /*
 
     Orientation 0
