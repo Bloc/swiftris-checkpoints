@@ -1,5 +1,3 @@
-<center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-final.png)</center>
-
 ## Adding Assets
 
 Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building *Swiftris*, we must unceremoniously delete every unnecessary file provided to us by Xcode.
