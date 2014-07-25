@@ -113,7 +113,7 @@ For the blocks which must now fall to their new locations, we're going to cascad
 
 In order to keep the blocks from looking robotic, they will fall shortly after one another rather than all at once.  At **#3** we've added code which will produce this pleasing effect for eye balls to enjoy. Based on the block and column indices, we introduce a directly proportional delay.
 
-When removing at lines at **#4**, we're going to make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ a `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural-looking variance into the explosive path. Furthermore, we've also randomized whether or not the block flies left or right.
+When removing lines at **#4**, we're going to make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ a `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural-looking variance into the explosive path. Furthermore, we've also randomized whether or not the block flies left or right.
 
 At **#5** we choose beginning and starting angles, these are clearly in radians and if your trigonometry is as rough as ours was when we wrote this, a circle in radian degrees – or *unit circle* – looks like this:
 
