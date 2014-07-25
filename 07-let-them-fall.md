@@ -1,7 +1,7 @@
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/08-let-them-fall-final.gif)</center>
 
 >“And why do we fall, Bruce? So we can learn to pick ourselves up.”<br>
->- Thomas Wayne
+>-- Thomas Wayne
 
 ## Let Them Fall
 
