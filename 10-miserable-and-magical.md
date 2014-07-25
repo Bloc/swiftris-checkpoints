@@ -113,7 +113,7 @@ For the blocks which must now fall to their new locations, we're going to cascad
 
 In order to keep the blocks from looking robotic, they will fall shortly after one another rather than all at once.  At **#3** we've added code which will produce this pleasing effect for eye balls to enjoy. Based on the block and column indices, we introduce a directly proportional delay.
 
-When removing lines at **#4**, we're going to make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ a `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural-looking variance into the explosive path. Furthermore, we've also randomized whether or not the block flies left or right.
+When removing lines at **#4**, we're going to make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ a `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural variance among the explosive paths. Furthermore, we've randomized whether the block flies left or right.
 
 At **#5** we choose beginning and starting angles, these are clearly in radians and if your trigonometry is as rough as ours was when we wrote this, a circle in radian degrees – or *unit circle* – looks like this:
 
@@ -124,7 +124,7 @@ When going left, we begin at `0` radians and end at `π` and when going right, w
 
 At **#6** we place the block sprite above the others such that they animate above the other blocks and begin the sequence of actions which concludes with the sprite being removed from the scene.
 
-Lastly, at **#7** we run the `completion` action after a duration matching the longest time it will take in order to drop the last block to its new resting place.
+Lastly, at **#7** we run the `completion` action after a duration matching the time it will take to drop the last block to its new resting place.
 
 ### Sound's Good, Too
 
@@ -137,7 +137,8 @@ Remember those wonderful mp3 files we imported so many eons ago? We're going to 
 // #1        
 +        runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
     }
-    
+
+// #2
 +    func playSound(sound:String) {
 +        runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
 +    }
@@ -145,7 +146,7 @@ Remember those wonderful mp3 files we imported so many eons ago? We're going to 
 
 Our theme song is incredible and therefore it must be played ad infinitum. At **#1** we've set up a looping sound playback action of our theme song. At **#2** we've added a method which `GameViewController` may use to play any sound file on demand.
 
-Run Swiftris and listen to the soothing sounds of soviet propaganda. Workers of the world, *unite!*
+Run Swiftris and listen to the soothing tones of soviet propaganda. Workers of the world, *unite!*
 
 >Fun fact, the word **robot** stems from the Russian word for **worker**, **rabotnik**. Languages are fun!
 
@@ -153,7 +154,7 @@ Run Swiftris and listen to the soothing sounds of soviet propaganda. Workers of 
 
 We can feel your excitement. It is quite literally being tracked by a thermal camera we've installed on your computer and beamed directly to Bloc's excitement-tracking servers. Those same servers operate a pair of subwoofers each roughly the size of a racquetball court. Our entire office gets that boom, boom pow when an eager programmer reaches their ultimate destination. It's pretty intense and yes our liability policy is extensive.
 
-All we need now is to connect our logic and our scene together to make one beautiful game baby:
+All we need now is to hook up our logic and scene together to make a beautiful game baby:
 
 ```objc(GameViewController.swift)
     func gameDidBegin(swiftris: Swiftris) {
@@ -247,4 +248,4 @@ Thanks again and enjoy Swiftris!
 
 #### Even More
 
-Want to learn more? Design your very first website, [jotly]()
+Want to learn more? Design your very first website, [jotly](). It's super cool and just as fun!
