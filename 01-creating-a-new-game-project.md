@@ -20,8 +20,8 @@ The next window beckons you to customize options for your project. Fill out the 
 | Option | Value |
 | - | - |
 | Product Name | **Swiftris** |
-| Organization Name | **<your name\>**, we chose **Bloc** |
-| Organization Identifier | **<your name>.com**, we chose **Bloc.io** |
+| Organization Name | **Bloc** |
+| Organization Identifier | **Bloc.io** |
 | Language | **Swift** |
 | Game Technology | **SpriteKit** |
 | Devices | **iPhone** |
