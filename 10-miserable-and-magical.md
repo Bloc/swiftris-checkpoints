@@ -145,7 +145,7 @@ Remember those wonderful mp3 files we imported so many eons ago? We're going to 
 
 Our theme song is incredible and therefore it must be played ad infinitum. At **#1** we set up a looping sound playback action of our theme song. At **#2** we added a method which `GameViewController` may use to play any sound file on demand.
 
-Run Swiftris and listen to the soothing tones of soviet propaganda. Workers of the world, *unite!*
+Run Swiftris and listen to the soothing tones of soviet propaganda. Workers of the world, *unite!* Note that your blocks won't explode yet - we need to write a little more code in the next section to finish that animation.
 
 >Fun fact, the word **robot** stems from the Russian word for **worker**, **rabotnik**. Languages are fun!
 
