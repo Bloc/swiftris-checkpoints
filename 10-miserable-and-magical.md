@@ -3,31 +3,29 @@
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-final.gif)</center>
 
-## Miserable and Magical
+## Adding Flare
 
-You've made it. It was a long and winding road filled with perilous pot holes and unnecessary pop culture references. At Bloc we know that programming is hard, but we make it fun and worth your effort. After you complete this checkpoint, you'll have a fully functional copy of Swiftris. Show it to your friends and family and maybe then they'll finally realize you are more than just free tech-support for their beige '98 Gateway desktop which should've been put out of its misery three service packs ago.
+You've made it. It was a long and winding road filled with perilous pot holes and unnecessary pop culture references. At Bloc we know that programming is hard, but we try to make it fun and worth your effort. After you complete this chapter, you'll have a completely functional version of Swiftris. Show it to your friends and family and maybe then they'll finally realize you are more than just free tech-support for their beige '98 Gateway desktop which should've been put out of its misery three service packs ago.
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical.jpg)</center>
 
-### Looking Good
-
-Let's start by adding some flare to the screen. Even though Swiftris is calculating your score and level, it sure isn't showing it to you. Open up `Main.storyboard` and re-shape your layout by selecting the following option:
+Let's start by adding some flare to the screen. Even though Swiftris is calculating your score and level, it sure isn't showing it to you. Open `Main.storyboard` and re-shape your layout by selecting the following options:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-1.png)</center>
 
-Add a **View** object to your existing `View` by dragging it from the objects list. Set its background to `default` – transparent. Then match the width, height and location attributes as shown below:
+Add a **View** object to your existing `View` by dragging it from the objects list. Click on the "Attributes Inspector" button and set its background to `default`, which is transparent. Click on the "Size Inspector" button and match the width, height and location attributes as shown below:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-2.png)</center>
 
-Add an **Image View** to the **View** element which you just created by dragging it into its visible area. Set the image view's location to `0, 0` and have its height and width match the **View**'s, `84` points wide and `100` points tall. Set the image view's **Image** property to `whitebg.png` as shown below:
+Add an **Image View** to the **View** element that you just created by dragging it into its visible area. In the "Size Inspector", set the image view's location to `0, 0` and have its height and width match the **View**'s: `84` points wide and `100` points tall. In the "Attributes Inspector", set the image view's **Image** property to `whitebg.png` as shown below:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-3.png)</center>
 
-Add a **Label** element to your view, set its location to `7, 20` and its width and height to `70, 21`. Match the label's properties with the following:
+Add a **Label** element to your view. In the "Size Inspector", set its location to `7, 20` and its width and height to `70, 21`. Match the label's properties with the following in the "Attributes Inspector":
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-4.png)</center>
 
-Copy the label you've just created and place it right beneath the previous. Set its text to `999`, its location to `0, 45` and its size to `84, 39`. Match its properties with the following screen grab and make sure that your layout hierarchy looks just like ours:
+Copy the label you just created and place it right beneath the previous. In the "Size Inspector", set its location to `0, 45` and its size to `84, 39`. In the "Attributes Inspector", set its text to `999` and match its properties with the following image. Make sure that your layout hierarchy looks just like ours:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-5.png)</center>
 
@@ -39,23 +37,23 @@ Your final storyboard should look something like this:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-6.png)</center>
 
-Open up the **Assistan Editor** by once again clicking on the little butler icon. Create an outlet for the first `999` label by <key>Ctrl + dragging</key> it from the storyboard editor into the properties section of `GameViewController`. Your outlet popup window should match the following:
+Open the **Assistant Editor** by clicking on the butler icon. Create an outlet for the first `999` label by <key>Ctrl + dragging</key> it from the storyboard editor into the properties section of `GameViewController`. Your outlet popup window should match the following:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-7.png)</center>
 
-Make sure the **Storage** option is set to **Weak**. Press connect. Repeat this step with the second `999` label and title it, `levelLabel`. Run Swiftris and you should see some pretty sexy looking score and level labels ripe for the augmenting!
+Make sure the **Storage** option is set to **Weak**. Press connect. Repeat this step with the second `999` label and title it, `levelLabel`. Run Swiftris and you should see some great looking score and level labels ripe for the augmenting!
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-preview-1.png)</center>
 
-### Blow It Up
+### Blow it up
 
-In order to make Swiftris truly great, it's going to need one thing: animations so explosive you have to walk away from them without looking back. Sunglasses: *non-optional*. Let's add a method which will drop our fallen blocks and blast destroyed blocks into the nebulous void:
+In order to make Swiftris truly great, it will need one thing: animations so explosive you have to walk away from them without looking back. Let's write some code which will drop our fallen blocks and blast destroyed blocks into the nebulous void:
 
 ```objc(GameScene.swift)
 // #1
 +    func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:() -> ()) {
 +        var longestDuration: NSTimeInterval = 0
-// #2        
+// #2
 +        for (columnIdx, column) in enumerate(fallenBlocks) {
 +            for (blockIdx, block) in enumerate(column) {
 +                let newPosition = pointForColumn(block.column, row: block.row)
@@ -72,16 +70,16 @@ In order to make Swiftris truly great, it's going to need one thing: animations 
 +                longestDuration = max(longestDuration, duration + delay)
 +            }
 +        }
-        
+
 +        for (rowIdx, row) in enumerate(linesToRemove) {
 +            for (blockIdx, block) in enumerate(row) {
 // #4
 +                let randomRadius = CGFloat(arc4random_uniform(400) + 100)
 +                let goLeft = arc4random_uniform(100) % 2 == 0
-                
+
 +                var point = pointForColumn(block.column, row: block.row)
 +                point = CGPointMake(point.x + (goLeft ? -randomRadius : randomRadius), point.y)
-                
+
 +                let randomDuration = NSTimeInterval(arc4random_uniform(2)) + 0.5
 // #5
 +                var startAngle = CGFloat(M_PI)
@@ -102,31 +100,32 @@ In order to make Swiftris truly great, it's going to need one thing: animations 
 +                            SKAction.removeFromParent()]))
 +            }
 +        }
-// #7        
+// #7
 +        runAction(SKAction.waitForDuration(longestDuration), completion:completion)
 +    }
 ```
 
-This is EPIC… At **#1** you can see that we're going to take in precisely the tuple data which `Swiftris` returns each time a line is removed. This will ensure that `GameViewController` need only pass those elements to `GameScene` in order for them to animate properly.
+This is EPIC… At **#1** you can see that we take in precisely the tuple data which `Swiftris` returns each time a line is removed. This will ensure that `GameViewController` need only pass those elements to `GameScene` in order for them to animate properly.
 
-For the blocks which must now fall to their new locations, we're going to cascade them from left to right. We begin by iterating column by column, block by block at **#2**. We've also established a `longestDuration` variable, it will determine precisely how long we should wait before calling the `completion` closure.
+For the blocks which must now fall to their new locations, we cascade them from left to right. We begin by iterating column by column, block by block at **#2**. We also established a `longestDuration` variable which will determine precisely how long we should wait before calling the `completion` closure.
 
-In order to keep the blocks from looking robotic, they will fall shortly after one another rather than all at once.  At **#3** we've added code which will produce this pleasing effect for eye balls to enjoy. Based on the block and column indices, we introduce a directly proportional delay.
+In order to keep the blocks from looking robotic, they will fall shortly after one another rather than all at once. At **#3** we wrote code which will produce this pleasing effect for eye balls to enjoy. Based on the block and column indices, we introduce a directly proportional delay.
 
-When removing lines at **#4**, we're going to make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ a `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural variance among the explosive paths. Furthermore, we've randomized whether the block flies left or right.
+When removing lines at **#4**, we make their blocks shoot off the screen like explosive debris. In order to accomplish this we will employ `UIBezierPath`. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural variance among the explosive paths. Furthermore, we've randomized whether the block flies left or right.
 
 At **#5** we choose beginning and starting angles, these are clearly in radians and if your trigonometry is as rough as ours was when we wrote this, a circle in radian degrees – or *unit circle* – looks like this:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-unit-circle.gif)</center>
->Riveting…
 
-When going left, we begin at `0` radians and end at `π` and when going right, we go from `π` to `2π`, #math.
+> Riveting…
+
+When going left, we begin at `0` radians and end at `π`. When going right, we go from `π` to `2π`. Math FTW!
 
 At **#6** we place the block sprite above the others such that they animate above the other blocks and begin the sequence of actions which concludes with the sprite being removed from the scene.
 
 Lastly, at **#7** we run the `completion` action after a duration matching the time it will take to drop the last block to its new resting place.
 
-### Sound's Good, Too
+### Sound is good
 
 Remember those wonderful mp3 files we imported so many eons ago? We're going to put those to use. Add a few lines to your `GameScene` file to support sound playback as well as an amazing theme song.
 
@@ -134,17 +133,17 @@ Remember those wonderful mp3 files we imported so many eons ago? We're going to 
         shapeLayer.position = LayerPosition
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
-// #1        
-+        runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+// #1
++       runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
     }
 
 // #2
-+    func playSound(sound:String) {
-+        runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
-+    }
++   func playSound(sound:String) {
++       runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
++   }
 ```
 
-Our theme song is incredible and therefore it must be played ad infinitum. At **#1** we've set up a looping sound playback action of our theme song. At **#2** we've added a method which `GameViewController` may use to play any sound file on demand.
+Our theme song is incredible and therefore it must be played ad infinitum. At **#1** we set up a looping sound playback action of our theme song. At **#2** we added a method which `GameViewController` may use to play any sound file on demand.
 
 Run Swiftris and listen to the soothing tones of soviet propaganda. Workers of the world, *unite!*
 
@@ -154,14 +153,14 @@ Run Swiftris and listen to the soothing tones of soviet propaganda. Workers of t
 
 We can feel your excitement. It is quite literally being tracked by a thermal camera we've installed on your computer and beamed directly to Bloc's excitement-tracking servers. Those same servers operate a pair of subwoofers each roughly the size of a racquetball court. Our entire office gets that boom, boom pow when an eager programmer reaches their ultimate destination. It's pretty intense and yes our liability policy is extensive.
 
-All we need now is to hook up our logic and scene together to make a beautiful game baby:
+All we need now is to hook up our logic and scene together to make a beautiful game:
 
 ```objc(GameViewController.swift)
     func gameDidBegin(swiftris: Swiftris) {
-+        levelLabel.text = "\(swiftris.level)"
-+        scoreLabel.text = "\(swiftris.score)"
-+        scene.tickLengthMillis = TickLengthLevelOne
-        
++       levelLabel.text = "\(swiftris.level)"
++       scoreLabel.text = "\(swiftris.score)"
++       scene.tickLengthMillis = TickLengthLevelOne
+
         // The following is false when restarting a new game
         if swiftris.nextShape != nil && swiftris.nextShape!.blocks[0].sprite == nil {
             scene.addPreviewShapeToScene(swiftris.nextShape!) {
@@ -179,14 +178,14 @@ When the game begins, we reset the score and level labels as well as the speed a
     func gameDidEnd(swiftris: Swiftris) {
         view.userInteractionEnabled = false
         scene.stopTicking()
-+        scene.playSound("gameover.mp3")
-+        scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: Array<Array<Block>>()) {
-+            swiftris.beginGame()
-+        }
++       scene.playSound("gameover.mp3")
++       scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: Array<Array<Block>>()) {
++           swiftris.beginGame()
++       }
     }
 ```
 
-After the game ends, we're going to play the designated game over sound, *that's a must*. Then we destroy the remaining blocks on screen before starting a brand new game with no delay, the show must go on.
+After the game ends, we'll play the designated game over sound; *that's a must*. Then we destroy the remaining blocks on screen before starting a brand new game with no delay. The show must go on.
 
 ```objc(GameViewController.swift)
     func gameDidLevelUp(swiftris: Swiftris) {
@@ -200,7 +199,7 @@ After the game ends, we're going to play the designated game over sound, *that's
     }
 ```
 
-Each time the player levels up, we're going to decrease the tick interval. At first, each level will decrease it by `100` milliseconds but as it progresses it will go even faster, topping off at `50` milliseconds between ticks. Lastly, we play a congratulatory level up sound, you have to reward them with something after all.
+Each time the player levels up, we'll decrease the tick interval. At first, each level will decrease it by `100` milliseconds, but as it progresses it will go even faster, eventually topping off at `50` milliseconds between ticks. Lastly, we play a congratulatory level up sound. We have to reward players with *something*, after all.
 
 ```objc(GameViewController.swift)
     func gameShapeDidDrop(swiftris: Swiftris) {
@@ -208,29 +207,29 @@ Each time the player levels up, we're going to decrease the tick interval. At fi
         scene.redrawShape(swiftris.fallingShape!) {
             swiftris.letShapeFall()
         }
-+        scene.playSound("drop.mp3")
++       scene.playSound("drop.mp3")
     }
 ```
 
-Not many changes here but it's the little details in life which matter. Letting the player see and *hear* the result of their efforts as well is like giving them the virtual proud father figure they never had.
+Not many changes here, but it's the little details in life that matter. Letting the player see and *hear* the result of their efforts as well is like giving them the virtual proud father figure they never had.
 
 ```objc(GameViewController.swift)
     func gameShapeDidLand(swiftris: Swiftris) {
         scene.stopTicking()
--        nextShape()
-+        self.view.userInteractionEnabled = false
+-       nextShape()
++       self.view.userInteractionEnabled = false
 // #1
-+        let removedLines = swiftris.removeCompletedLines()
-+        if removedLines.linesRemoved.count > 0 {
-+            self.scoreLabel.text = "\(swiftris.score)"
-+            scene.animateCollapsingLines(removedLines.linesRemoved, fallenBlocks:removedLines.fallenBlocks) {
++       let removedLines = swiftris.removeCompletedLines()
++       if removedLines.linesRemoved.count > 0 {
++           self.scoreLabel.text = "\(swiftris.score)"
++           scene.animateCollapsingLines(removedLines.linesRemoved, fallenBlocks:removedLines.fallenBlocks) {
 // #2
-+                self.gameShapeDidLand(swiftris)
-+            }
-+            scene.playSound("bomb.mp3")
-+        } else {
-+            nextShape()
-+        }
++               self.gameShapeDidLand(swiftris)
++           }
++           scene.playSound("bomb.mp3")
++       } else {
++           nextShape()
++       }
     }
 ```
 
@@ -238,14 +237,14 @@ When a shape lands either naturally on its own or after a drop, it is time to ch
 
 After the animation completes, we perform a *recursive* call at **#2**. A recursive function is one which invokes itself. In Swiftris' case, after the blocks have fallen to their new location, they may have formed brand new lines. Therefore, after the first set of lines are removed, we invoke `gameShapeDidLand(Swiftris)` again in order to detect any such new lines. If none are found, the next shape is brought in.
 
-### Thank You
+### Thank you!
 
-For sticking with us this long. It's been a doozy and honestly, I'm not sure how you put up with it. Oh yeah, the puppy gifs:
+For sticking with us this long. It's been a doozy, and honestly, I'm not sure how you put up with it. Oh yeah, the puppy gifs:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-cute-puppy-gifs-towel.gif)</center>
 
 Thanks again and enjoy Swiftris!
 
-#### Even More
+#### Even more
 
-Want to learn more? Design your very first website, [jotly](). It's super cool and just as fun!
+Want to learn more? Design your very first website, [Jottly](https://www.bloc.io/build-your-first-website-with-html-and-css). It's super cool and just as fun! If you enjoyed this book, please share it with your friends and followers.
