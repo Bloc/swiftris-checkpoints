@@ -130,7 +130,7 @@ Your project won't compile at the moment and you will certainly see some errors,
 
 [Peruse Swift Dictionary details here.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Dictionary.html)
 
-We access dictionary values similarly to those of an array by employing square braces. However, our indices are now of type **key**, and therefore in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
+We access dictionary values similarly to those of an array by employing square braces. However, our subscripts are now **keys**, and therefore in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
 
 It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is a perfect for passing or returning multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
 
