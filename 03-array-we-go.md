@@ -75,7 +75,7 @@ At `#2` we declare an actual Swift array; it will be the underlying data structu
 
 During our initialization at `#3`, we instantiate our internal `array` structure with a size of `rows * columns`. This guarantees that `Array2D` can store as many objects as our game board requires, 200 in our case.
 
-[Go here if you're yearning for more about Swift arrays.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html).
+[Go here if you're yearning for more about Swift arrays](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html).
 
 And finally, at `4#` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
 

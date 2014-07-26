@@ -49,14 +49,7 @@ Replace its generated content with the following:
 +}
 ```
 
-As you may have guessed, this isn't everything you'll need to represent a block. The first part of this file defines an *enumeration*: `BlockColor`. Swiftris supports six different colors in total:
-
-- `<font color="#2CA6D1">blue</font>`
-- `<font color="#FD9232">orange</font>`
-- `<font color="#8A76C0">purple</font>`
-- `<font color="#EE5B2F">red</font>`
-- `<font color="#1AADAC">teal</font>`
-- `<font color="#FAB432">yellow</font>`
+As you may have guessed, this isn't everything you'll need to represent a block. The first part of this file defines an *enumeration*: `BlockColor`. Swiftris supports six different colors in total.
 
 At **#1** we define precisely how many colors are available in Swiftris, `6`.
 

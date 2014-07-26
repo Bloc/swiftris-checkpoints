@@ -2,7 +2,7 @@
 
 If you've played any version of Tetris before, you expect that a piece will drop by one row periodically at a given time interval. Pieces perilously lower themselves towards your doom, unstoppable by all that is right in the world… So! Swiftris will be no different, our game will mimic this behavior.
 
-A class which extends `SKScene` inherits the `update(currentTime: CFTimeInterval)` function. `update` is invoked every *frame.* A frame can be thought of as a single image presented to the user. Like a frame found in a cat video, it is a small time-slice of cat content with respect to the whole cat-sperience. Smooth-running games have higher frame rates; about 60 frames per second or more. Slower games typically plummet below a dismal 30 fps. [Combat anyone?](http://en.wikipedia.org/wiki/Combat_(video_game))
+A class which extends `SKScene` inherits the `update(currentTime: CFTimeInterval)` function. `update` is invoked every *frame.* A frame can be thought of as a single image presented to the user. Like a frame found in a cat video, it is a small time-slice of cat content with respect to the whole cat-sperience. Smooth-running games have higher frame rates; about 60 frames per second or more. Slower games typically plummet below a dismal 30 fps.
 
 A game looks slow when our eyes begin to perceive each individual frame; this is because of a concept known as discrete motion. Here's an example of identical content playing at various frame rates:
 
