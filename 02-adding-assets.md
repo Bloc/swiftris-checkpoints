@@ -22,7 +22,7 @@ To get rid of the aimless space ship once and for all, click the `Images.xcasset
 
 Having slaughtered those files which are of no use, we must now purge our project of any and all *code* which we do not require. There's no need to have lingering source code designed to support inept space pilots. Delete all of the lines marked in red within their corresponding files:
 
-```ruby(GameScene.swift)
+```objc(GameScene.swift)
 import SpriteKit
 
 class GameScene: SKScene {
@@ -64,7 +64,7 @@ class GameScene: SKScene {
 
 That was a lot, but there's more:
 
-```ruby(GameViewController.swift)
+```objc(GameViewController.swift)
 import UIKit
 import SpriteKit
 
@@ -146,7 +146,7 @@ Let's put those new background images to work. We'll begin by establishing `Game
 > If you're working with Swift for the first time, we highly encourage you to type each line by hand in order to get a feel for the language in your fingers… it sounds dirty but it's good for you.
 
 
-```ruby(GameScene.swift)
+```objc(GameScene.swift)
 +init(size: CGSize) {
 +    super.init(size: size)
 
@@ -163,7 +163,7 @@ SpriteKit is based on OpenGL and therefore its coordinate system is opposite to 
 
 >`background` is the variable's name, its type is inferred to be that of `SKSpriteNode` and the keyword `let` indicates that it can not be re-assigned. `let` is akin to Java's `final`.
 
-```ruby(GameViewController.swift)
+```objc(GameViewController.swift)
 +var scene: GameScene!
 
 override func viewDidLoad() {
