@@ -87,7 +87,7 @@ At **#2** we added a function for checking both block boundary conditions. This 
 Before proceeding, let's add some convenient helper functions to `Shape.swift` which will aide in `Switris`' ability to move and rotate each shape at will:
 
 ```objc(Shape.swift)
-    @final func rotateBlocks(orientation: Orientation) {
+    final func rotateBlocks(orientation: Orientation) {
         if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
             for (idx, (columnDiff:Int, rowDiff:Int)) in enumerate(blockRowColumnTranslation) {
                 blocks[idx].column = column + columnDiff
@@ -97,35 +97,35 @@ Before proceeding, let's add some convenient helper functions to `Shape.swift` w
     }
 
 // #1
-+    @final func rotateClockwise() {
++    final func rotateClockwise() {
 +        let newOrientation = Orientation.rotate(orientation, clockwise: true)
 +        rotateBlocks(newOrientation)
 +        orientation = newOrientation
 +    }
 
-+    @final func rotateCounterClockwise() {
++    final func rotateCounterClockwise() {
 +        let newOrientation = Orientation.rotate(orientation, clockwise: false)
 +        rotateBlocks(newOrientation)
 +        orientation = newOrientation
 +    }
 
-    @final func lowerShapeByOneRow() {
+    final func lowerShapeByOneRow() {
         shiftBy(0, rows:1)
     }
 
-+    @final func raiseShapeByOneRow() {
++    final func raiseShapeByOneRow() {
 +        shiftBy(0, rows:-1)
 +    }
 
-+    @final func shiftRightByOneColumn() {
++    final func shiftRightByOneColumn() {
 +        shiftBy(1, rows:0)
 +    }
 
-+    @final func shiftLeftByOneColumn() {
++    final func shiftLeftByOneColumn() {
 +        shiftBy(-1, rows:0)
 +    }
 
-    @final func shiftBy(columns: Int, rows: Int) {
+    final func shiftBy(columns: Int, rows: Int) {
         self.column += columns
         self.row += rows
         for block in blocks {

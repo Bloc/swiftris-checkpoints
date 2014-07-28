@@ -1,6 +1,6 @@
 ## Adding Assets
 
-Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building *Swiftris*, we must unceremoniously delete every unnecessary file provided to us by Xcode.
+Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building Swiftris, we must unceremoniously delete every unnecessary file provided to us by Xcode.
 
 Open Project Navigator by either clicking the designated icon or pressing <key>⌘ + 1</key>:
 
@@ -22,7 +22,7 @@ To get rid of the aimless space ship once and for all, click the `Images.xcasset
 
 Having slaughtered those files which are of no use, we must now purge our project of any and all *code* which we do not require. There's no need to have lingering source code designed to support inept space pilots. Delete all of the lines marked in red within their corresponding files:
 
-```ruby(GameScene.swift)
+```objc(GameScene.swift)
 import SpriteKit
 
 class GameScene: SKScene {
@@ -64,7 +64,7 @@ class GameScene: SKScene {
 
 That was a lot, but there's more:
 
-```ruby(GameViewController.swift)
+```objc(GameViewController.swift)
 import UIKit
 import SpriteKit
 
@@ -129,7 +129,7 @@ class GameViewController: UIViewController {
 
 ### The Sights And Sounds Of Swiftris
 
-In order to experience *Swiftris* in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
+In order to experience Swiftris in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-copy-if-necessary.png)</center>
 
@@ -146,7 +146,7 @@ Let's put those new background images to work. We'll begin by establishing `Game
 > If you're working with Swift for the first time, we highly encourage you to type each line by hand in order to get a feel for the language in your fingers… it sounds dirty but it's good for you.
 
 
-```ruby(GameScene.swift)
+```objc(GameScene.swift)
 +init(size: CGSize) {
 +    super.init(size: size)
 
@@ -163,7 +163,7 @@ SpriteKit is based on OpenGL and therefore its coordinate system is opposite to 
 
 >`background` is the variable's name, its type is inferred to be that of `SKSpriteNode` and the keyword `let` indicates that it can not be re-assigned. `let` is akin to Java's `final`.
 
-```ruby(GameViewController.swift)
+```objc(GameViewController.swift)
 +var scene: GameScene!
 
 override func viewDidLoad() {

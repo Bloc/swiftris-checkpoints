@@ -36,4 +36,4 @@ After saving it should open Xcode to your brand new Swiftris project, specifical
 
 **Run** the default game project by pressing <key>⌘ + R</key> on your keyboard or by clicking the little play button in the top left corner. If a simulator isn't present, Xcode will download one for you before launching the app.
 
-Congratulations, you're infinitely closer to a completed *Swiftris* game than you were 10 minutes ago. *That's a big deal*.
+Congratulations, you're infinitely closer to a completed Swiftris game than you were 10 minutes ago. *That's a big deal*.

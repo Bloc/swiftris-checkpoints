@@ -77,7 +77,7 @@ During our initialization at `#3`, we instantiate our internal `array` structure
 
 [Go here if you're yearning for more about Swift arrays](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html).
 
-And finally, at `4#` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
+And finally, at `#4` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
 
 [More detail on subscripting.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Subscripts.html).
 

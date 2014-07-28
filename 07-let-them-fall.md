@@ -8,7 +8,7 @@
 We've worked pretty hard on preparing our blocks and shapes, let's just make them fall already! Thankfully, this only requires a bit of meaningful code before it can be witnessed in Swiftris! Let's begin by adding some helper methods to `Shape.swift` which will allow us to establish and alter our shape's location:
 
 ```objc(Shape.swift)
-    @final func initializeBlocks() {
+    final func initializeBlocks() {
         if let blockRowColumnTranslations = blockRowColumnPositions[orientation] {
             for i in 0..<blockRowColumnTranslations.count {
                 let blockRow = row + blockRowColumnTranslations[i].rowDiff
@@ -19,7 +19,7 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
         }
     }
 
-+    @final func rotateBlocks(orientation: Orientation) {
++    final func rotateBlocks(orientation: Orientation) {
 +        if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
 // #1
 +            for (idx, (columnDiff:Int, rowDiff:Int)) in enumerate(blockRowColumnTranslation) {
@@ -29,12 +29,12 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
 +        }
 +    }
 
-+    @final func lowerShapeByOneRow() {
++    final func lowerShapeByOneRow() {
 +        shiftBy(0, rows:1)
 +    }
 
 // #2
-+    @final func shiftBy(columns: Int, rows: Int) {
++    final func shiftBy(columns: Int, rows: Int) {
 +        self.column += columns
 +        self.row += rows
 +        for block in blocks {
@@ -44,13 +44,13 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
 +    }
 
 // #3
-+    @final func moveTo(column: Int, row:Int) {
++    final func moveTo(column: Int, row:Int) {
 +        self.column = column
 +        self.row = row
 +        rotateBlocks(orientation)
 +    }
 
-+    @final class func random(startingColumn:Int, startingRow:Int) -> Shape {
++    final class func random(startingColumn:Int, startingRow:Int) -> Shape {
 +        switch Int(arc4random_uniform(NumShapeTypes)) {
 // #4
 +        case 0:
