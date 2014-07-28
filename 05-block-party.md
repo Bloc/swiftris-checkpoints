@@ -67,7 +67,7 @@ At **#4** we define a *computed property*, `spriteName`. A computed property is 
 
 `spriteName` returns the correct filename for the given color, we use a simple `switch…case` statement to accomplish this.
 
-At **#5** we declare yet another computer property, `description`. This property is required if we are to adhere to the `Printable` protocol. Without it, our code will fail to compile. It simply returns the `spriteName` of the color which is more than enough to describe the object.
+At **#5** we declare yet another computed property, `description`. This property is required if we are to adhere to the `Printable` protocol. Without it, our code will fail to compile. It simply returns the `spriteName` of the color which is more than enough to describe the object.
 
 [Interested in reading more about computed properties? Try here.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html)
 

@@ -132,14 +132,14 @@ Your project won't compile at the moment and you will certainly see some errors,
 
 We access dictionary values similarly to those of an array by employing square braces. However, our subscripts are now **keys**, and therefore in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
 
-It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is a perfect for passing or returning multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
+It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is perfect for passing or returning multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
 
 ```objc
 let arrayOfDiffs = blockRowColumnPositions[Orientation.0]!
 let columnDifference = arrayOfDiffs[0].columnDiff
 ```
 
-Elements found within a dictionary are optional by default, therefore we must dereference them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
+Elements found within a dictionary are optional by default, therefore we must unwrap them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
 
 [Can't get enough of tuples? We know that feeling.](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Types.html)
 
@@ -159,7 +159,7 @@ Your `Shape` class has some build errors, let's fix them.
     }
 
 // #1
-+    @final func initializeBlocks() {
++    final func initializeBlocks() {
 // #2
 +        if let blockRowColumnTranslations = blockRowColumnPositions[orientation] {
 +            for i in 0..<blockRowColumnTranslations.count {
@@ -177,7 +177,7 @@ func ==(lhs: Shape, rhs: Shape) -> Bool {
 }
 ```
 
-At **#1** we defined a `@final` function which means it cannot be overridden by subclasses. This implementation of `initializeBlocks()` is the only one allowed by the `Shape` class.
+At **#1** we defined a `final` function which means it cannot be overridden by subclasses. This implementation of `initializeBlocks()` is the only one allowed by `Shape` and its subclasses.
 
 At **#2** we introduced conditional assignments. This `if` conditional first attempts to assign an array into `blockRowColumnTranslations` after extracting it from the computed dictionary property. If one is *not* found, the `if` block is not executed.
 
@@ -192,7 +192,7 @@ if blockRowColumnTranslations != nil {
 
 ### Subclasses
 
-You've written a solid `Shape` class, yet it hasn't truly defined any possible Tetrominoes for us to play with. `Shape` is merely a generic tool meant to support an infinite number of shapes. Let's define the seven shapes which Swiftris will allow. *Create* and *code* the following subclass of `Shape`: `SquareShape`:
+You've written a solid `Shape` class, yet it hasn't truly defined any possible Tetrominoes for us to play with. `Shape` is merely a generic tool meant to support an infinite number of shapes. Let's define the seven shapes which Swiftris will allow. *Create* and *code* the following subclass of `Shape`, `SquareShape`:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-square.png)</center>
 
@@ -232,9 +232,9 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 +}
 ```
 
-Thanks to the `Shape` class, defining Tetrominoes with a subclass is fairly trivial -- we just provide the differential of block locations from a given `row` and `column` with respect to the shape's rotation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Furthermore, its bottom blocks will always be the third and fourth block as defined by the comments at **#1**.
+Thanks to the `Shape` class, defining Tetrominoes with a subclass is fairly trivial. Subclasses must simply provide the distance of each block from the shape's `row` and `column` location with respect to each possible orientation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Consequently, its bottom blocks will always be the third and fourth block as described by the comments at **#1**.
 
-At **#2** we've overridden the `blockRowColumnPositions` computed property to provide a full dictionary of tuple arrays. Each index of the arrays represents one of the four blocks ordered from block `0` to block `3`. For example, with a square shape the top-left – block `0` – block location is exactly identical to the shape's `row` and `column` location. Therefore the tuple is `(0, 0)`, `0` column difference and `0` row difference. The second block is always `1` column to the right of the shape's given `column` value, therefore its tuple is always `(1, 0)`.
+At **#2** we've overridden the `blockRowColumnPositions` computed property to provide a full dictionary of tuple arrays. Each index of the arrays represents one of the four blocks ordered from block `0` to block `3`. For example, the top-left block location – block `0` – of a square is exactly identical to its `row` and `column` location. Therefore the tuple is `(0, 0)`, `0` column difference and `0` row difference. The second block is always `1` column to the right of the shape's given `column` value, therefore its tuple is always `(1, 0)`.
 
 Finally, at **#3** we perform a similar `override` by providing a dictionary of bottom block arrays. As was stated earlier, a square shape does not rotate, therefore its bottom-most blocks are consistently the third and fourth blocks as indicated by the comments at **#1**.
 

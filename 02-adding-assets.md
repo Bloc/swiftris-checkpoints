@@ -1,6 +1,6 @@
 ## Adding Assets
 
-Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building *Swiftris*, we must unceremoniously delete every unnecessary file provided to us by Xcode.
+Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building Swiftris, we must unceremoniously delete every unnecessary file provided to us by Xcode.
 
 Open Project Navigator by either clicking the designated icon or pressing <key>⌘ + 1</key>:
 
@@ -129,7 +129,7 @@ class GameViewController: UIViewController {
 
 ### The Sights And Sounds Of Swiftris
 
-In order to experience *Swiftris* in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
+In order to experience Swiftris in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-copy-if-necessary.png)</center>
 
