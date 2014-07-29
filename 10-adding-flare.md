@@ -247,4 +247,4 @@ Thanks again and enjoy Swiftris!
 
 #### Even more
 
-Want to learn more? Design your very first website, [Jottly](https://www.bloc.io/build-your-first-website-with-html-and-css). It's super cool and just as fun! If you enjoyed this book, please share it with your friends and followers.
+Want to learn more? Design your very first website, [Jottly](https://www.bloc.io/tutorials/jottly-beginner-s-guide-to-html-css-skeleton-and-animation-css). It's super cool and just as fun! If you enjoyed this book, please share it with your friends and followers.
