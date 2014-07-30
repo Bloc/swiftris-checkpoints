@@ -74,7 +74,7 @@ In order to make Swiftris truly great, it will need one thing: animations so exp
 +        for (rowIdx, row) in enumerate(linesToRemove) {
 +            for (blockIdx, block) in enumerate(row) {
 // #4
-+                let randomRadius = CGFloat(arc4random_uniform(400) + 100)
++                let randomRadius = CGFloat(UInt(arc4random_uniform(400) + 100))
 +                let goLeft = arc4random_uniform(100) % 2 == 0
 
 +                var point = pointForColumn(block.column, row: block.row)
