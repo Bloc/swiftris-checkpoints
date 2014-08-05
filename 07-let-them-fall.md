@@ -146,7 +146,11 @@ class GameScene: SKScene {
 
 +   var textureCache = Dictionary<String, SKTexture>()
 
-    init(size: CGSize) {
+    required init(coder aDecoder: NSCoder!) {
+        fatalError("NSCoder not supported")
+    }
+
+    override init(size: CGSize) {
         super.init(size: size)
 
         anchorPoint = CGPoint(x: 0, y: 1.0)
