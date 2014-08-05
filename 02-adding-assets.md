@@ -147,7 +147,11 @@ Let's put those new background images to work. We'll begin by establishing `Game
 
 
 ```objc(GameScene.swift)
-+init(size: CGSize) {
++required init(coder aDecoder: NSCoder!) {
++    fatalError("NSCoder not supported")
++}
+
++override init(size: CGSize) {
 +    super.init(size: size)
 
 +    anchorPoint = CGPoint(x: 0, y: 1.0)
