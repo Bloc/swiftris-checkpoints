@@ -67,7 +67,7 @@ The file should automatically open in the editing window. Replace the generated 
 
 Let's briefly discuss what this class helps us accomplish. At `#1` we're defining a class named `Array2D`. Generic arrays in Swift are actually of type `struct`, not `class` but we need a class in this case since class objects are passed by reference whereas structures are passed by value (copied). Our game logic will require a single copy of this data structure to persist across the entire game.
 
-[For a more thorough explanation of Swift classes, check this out.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/ClassesAndStructures.html).
+[For a more thorough explanation of Swift classes, check this out.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/ClassesAndStructures.html)
 
 Notice that in the class' declaration we provide a typed parameter: `<T>`. This allows our array to store any type of data and therefore remain a general-purpose tool.
 
@@ -75,11 +75,11 @@ At `#2` we declare an actual Swift array; it will be the underlying data structu
 
 During our initialization at `#3`, we instantiate our internal `array` structure with a size of `rows * columns`. This guarantees that `Array2D` can store as many objects as our game board requires, 200 in our case.
 
-[Go here if you're yearning for more about Swift arrays](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html).
+[Go here if you're yearning for more about Swift arrays.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html)
 
 And finally, at `#4` we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]` - this accomplishes just that. The getter is fairly self explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
 
-[More detail on subscripting.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Subscripts.html).
+[More detail on subscripting.](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Subscripts.html)
 
 The setter is the reverse operation of that; `newValue` is assigned to the location determined by the same algorithm found in the custom getter.
 
