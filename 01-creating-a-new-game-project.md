@@ -13,6 +13,8 @@ Or
 
 When the new project window appears, choose **Game** from under the **iOS** > **Application** category and press **Next**.
 
+<center>![](http://bloc-books.s3.amazonaws.com/swiftris/02-creating-a-new-game-project-new-game.png)</center>
+
 The next window beckons you to customize options for your project. Fill out the fields described in the table below:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/02-creating-a-new-game-project-options.png)</center>
