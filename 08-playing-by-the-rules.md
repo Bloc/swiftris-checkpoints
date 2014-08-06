@@ -82,7 +82,7 @@ Let's add a few methods to detect if and when a shape is breaking the rules:
 
 At **#1** we added some logic to `newShape()` which may now detect the ending of a Switris game. The game ends when a new shape located at the designated starting location collides with existing blocks. This is the case where the player no longer has enough room to move the new shape, and therefore, we must terminate their tower of terror.
 
-At **#2** we added a function for checking both block boundary conditions. This first determines whether or not a block exceeds the legal size of the game board. The second determines whether or not a block's current location overlaps with an existing block. Remember, Swiftris will function with *trial-and-error*. We'll send our shapes to all sorts of bizarre places before we check whether or not they are legally allowed to do so.
+At **#2** we added a function for checking both block boundary conditions. This first determines whether or not a block exceeds the legal size of the game board. The second determines whether or not a block's current location overlaps with an existing block. Remember, Swiftris will function by *trial-and-error*. We'll send our shapes to all sorts of bizarre places before we check whether or not they are legally allowed to be there.
 
 Before proceeding, let's add some convenient helper functions to `Shape.swift` which will aide in `Switris`' ability to move and rotate each shape at will:
 
@@ -379,15 +379,15 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +    }
 ```
 
-This looks like a long and unwieldy function, so let's walk through it like we would through tall grass; holding hands while wearing a durable pair of pants. At **#1**, we defined a function which returns yet another tuple. This time it's comprised of two arrays: `linesRemoved` and `fallenBlocks`. `linesRemoved` represents rows of blocks beginning with those closest to the bottom of the game board which have been removed as a result of the player filling them in entirely.
+This looks like a long and unwieldy function, so let's walk through it like we would through tall grass; holding hands and wearing overalls. At **#1**, we defined a function which returns yet another tuple. This time it's composed of two arrays: `linesRemoved` and `fallenBlocks`. `linesRemoved` maintains each row of blocks which the user has filled in completely. 
 
-`fallenBlocks` is an array of column-by-column arrays for the blocks which have fallen to new positions as a result of the lines which were removed beneath them. At **#2** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`; therefore `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set - `10` blocks in total - it counts that as a removed line and adds it to the return variable.
+At **#2** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`; therefore `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set - `10` blocks in total - it counts that as a removed line and adds it to the return variable.
 
 At **#3** we check and see if we recovered any lines at all, if not, we return empty arrays immediately.
 
 At **#4**, we add points to the player's score based on the number of lines they've created and their level. If their points exceed their level times 1000, they level up and our delegate is informed.
 
-Lastly, at **#5** we do something a bit murky-looking. Starting in the left-most column and immediately above the bottom-most removed line, we count upwards towards the top of the game board. As we do so, we take each remaining block we find on the game board and lower it as far as we legally may. This array of arrays represents each column of blocks starting from `0` and going up to `9` which have been displaced as a result of the removed lines.
+At **#5** we do something a bit murky-looking. Starting in the left-most column and immediately above the bottom-most removed line, we count upwards towards the top of the game board. As we do so, we take each remaining block we find on the game board and lower it as far as possible. `fallenBlocks` is an array of arrays, each sub-array is filled with blocks that fell to a new position as a result of the user clearing lines beneath them.
 
 Woo, that was a doozy… Let's take a break by enjoying some cuteness:
 
@@ -513,8 +513,8 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
 
 At **#1** we substituted our previous efforts with `Swiftris`' `letShapeFall()` function, precisely what we need at each tick.
 
-At **#2** we introduced a boolean which allows us to shut down interaction with the view. Regardless of what the user does to the device at this point, they will not be able to manipulate Switris in any way. This is useful during intermediate states when blocks are being animated, shifted around and calculated. Otherwise, a well-timed user interaction may cause an unpredictable game state to occur.
+At **#2** we introduced a boolean which allows us to shut down interaction with the view. Regardless of what the user does to the device at this point, they will not be able to manipulate Switris in any way. This is useful during intermediate states when blocks are being animated, shifted around or calculated. Otherwise, a well-timed user interaction may cause an unpredictable game state to occur.
 
-Lastly, at **#3** all that is necessary to do after a shape has moved is to redraw its representative sprites at their new location.
+Lastly, at **#3** all that is necessary to do after a shape has moved is to redraw its representative sprites at their new locations.
 
-Run Swiftris to discover that your shapes are aware of one other and the floor as well! It may not be overly exciting but at least the laws of physics appear to be obeyed!
+Run Swiftris to discover that your shapes are aware of one another as well as the floor! It may not be overly exciting but at least the laws of physics are being obeyed.
