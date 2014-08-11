@@ -20,6 +20,10 @@ SpriteKit is a set of APIs provided by the iOS SDK (software development kit) wh
 
 ### Xcode
 
-As of the writing of this Bloc Book, Xcode 6 Beta 5 is the latest version required for Swift compilation. You can download the latest version of Xcode [here](https://developer.apple.com/xcode/downloads/). While it's not required for this book, you may want to consider signing up for the [iOS Developer Program](https://developer.apple.com/programs/ios/). We think the $99 annual fee is wholly worthwhile: it provides access to yet-to-be public software updates and allows you to publish apps to the App Store.
+As of the writing of this Bloc Book, Xcode 6 Beta 5 is the latest version required for Swift compilation. To download Xcode beta versions, you'll need to have an Apple developer account. You can register [here](https://developer.apple.com/register/) for free.
+
+Once you have an Apple developer account you can download the latest version of Xcode [here](https://developer.apple.com/xcode/downloads/). 
+
+While it's not required for this book, you may want to consider signing up for the [iOS Developer Program](https://developer.apple.com/programs/ios/). We think the $99 annual fee is wholly worthwhile: it provides access to yet-to-be public software updates and allows you to publish apps to your iPhone and the App Store.
 
 Once you have Xcode downloaded and installed, you're ready to move to the next chapter.
