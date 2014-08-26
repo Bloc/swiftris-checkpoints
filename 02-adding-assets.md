@@ -178,7 +178,6 @@ override func viewDidLoad() {
 +    skView.multipleTouchEnabled = false
 
 +    // Create and configure the scene.
-+    var scene: GameScene!
 +    scene = GameScene(size: skView.bounds.size)
 +    scene.scaleMode = .AspectFill
 
