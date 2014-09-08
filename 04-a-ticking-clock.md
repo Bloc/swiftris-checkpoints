@@ -23,7 +23,7 @@ class GameScene: SKScene {
 +    var tickLengthMillis = TickLengthLevelOne
 +    var lastTick:NSDate?
 
-    required init(coder aDecoder: NSCoder!) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("NSCoder not supported")
     }
 

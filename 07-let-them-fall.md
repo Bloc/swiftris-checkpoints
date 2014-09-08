@@ -146,7 +146,7 @@ class GameScene: SKScene {
 
 +   var textureCache = Dictionary<String, SKTexture>()
 
-    required init(coder aDecoder: NSCoder!) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("NSCoder not supported")
     }
 
