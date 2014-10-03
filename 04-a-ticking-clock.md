@@ -77,7 +77,7 @@ What's special about our invocation here is the exclamation mark, `!`. This symb
 We then check if the time passed has exceeded our `tickLengthMillis` variable. If enough time has elapsed, we must report a tick. We do so by first updating our last known tick time to the present and then invoking our closure. The syntax we use is conditioned on whether or not `tick` is present. By placing a `?` after the variable name, we are asking Swift to first check if `tick` exists and if so, invoke it with no parameters. It is shorthand for the following statement:
 
 ```objc
-if tick {
+if tick != nil {
     tick!()
 }
 ```
