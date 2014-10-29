@@ -46,14 +46,14 @@ class GameScene: SKScene {
 +        }
 +        var timePassed = lastTick!.timeIntervalSinceNow * -1000.0
 +        if timePassed > tickLengthMillis {
-+            lastTick = NSDate.date()
++            lastTick = NSDate()
 +            tick?()
 +        }
     }
 
 // #4
 +    func startTicking() {
-+        lastTick = NSDate.date()
++        lastTick = NSDate()
 +    }
 
 +    func stopTicking() {
