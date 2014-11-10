@@ -3,13 +3,13 @@
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-final.gif)</center>
 
-## Adding Flare
+## Adding Flair
 
 You've made it. It was a long and winding road filled with perilous pot holes and unnecessary pop culture references. At Bloc we know that programming is hard, but we try to make it fun and worth your effort. After you complete this chapter, you'll have a completely functional version of Swiftris. Show it to your friends and family and maybe then they'll finally realize you are more than just free tech-support for their beige '98 Gateway desktop which should've been put out of its misery three service packs ago.
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical.jpg)</center>
 
-Let's start by adding some flare to the screen. Even though Swiftris is calculating your score and level, it sure isn't showing it to you. Open `Main.storyboard` and re-shape your layout by selecting the following options:
+Let's start by adding some flair to the screen. Even though Swiftris is calculating your score and level, it sure isn't showing it to you. Open `Main.storyboard` and re-shape your layout by selecting the following options:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/10-miserable-and-magical-xcode-1.png)</center>
 

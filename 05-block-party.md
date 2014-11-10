@@ -44,7 +44,7 @@ Replace its generated content with the following:
 
 // #6
 +    static func random() -> BlockColor {
-+        return BlockColor.fromRaw(Int(arc4random_uniform(NumberOfColors)))!
++        return BlockColor(rawValue:Int(arc4random_uniform(NumberOfColors)))!
 +    }
 +}
 ```
@@ -71,13 +71,13 @@ At **#5** we declare yet another computed property, `description`. This property
 
 [Interested in reading more about computed properties? Try here.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html)
 
-Finally at **#6**, we declare a static function named `random()`. As you may have guessed, this function returns a random choice among the colors found in `BlockColor`. It uses the enumeration function, `fromRaw(Int)` to recover the enum which matches the numerical value passed into it, in our case numbers `0` through `5`.
+Finally at **#6**, we declare a static function named `random()`. As you may have guessed, this function returns a random choice among the colors found in `BlockColor`. It creates a BlockColor using the `rawValue:Int` initializer to setup an enumeration which assigned to the numerical value passed into it, in our case numbers `0` through `5`.
 
 Now that we've mastered the colors, let's do what we came here to do:
 
 ```objc(Block.swift)
     static func random() -> BlockColor {
-        return BlockColor.fromRaw(Int(arc4random_uniform(NumberOfColors)))!
+        return BlockColor(rawValue:Int(arc4random_uniform(NumberOfColors)))!
     }
 }
 
@@ -117,7 +117,7 @@ Now that we've mastered the colors, let's do what we came here to do:
 
 // #7
 +func ==(lhs: Block, rhs: Block) -> Bool {
-+    return lhs.column == rhs.column && lhs.row == rhs.row && lhs.color.toRaw() == rhs.color.toRaw()
++    return lhs.column == rhs.column && lhs.row == rhs.row && lhs.color.rawValue == rhs.color.rawValue
 +}
 ```
 
