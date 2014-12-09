@@ -147,7 +147,7 @@ Let's put those new background images to work. We'll begin by establishing `Game
 
 
 ```objc(GameScene.swift)
-+required init(coder aDecoder: NSCoder!) {
++required init(coder aDecoder: NSCoder) {
 +    fatalError("NSCoder not supported")
 +}
 
