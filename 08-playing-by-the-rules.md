@@ -311,8 +311,8 @@ Most, if not all games involve some sort of scoring mechanism; a means by which 
 
 ```objc(Switris.swift)
     func endGame() {
-+       score = 0
-+       level = 1
++        score = 0
++        level = 1
         delegate?.gameDidEnd(self)
     }
 ```
@@ -321,7 +321,9 @@ We added a couple variables to help us keep track of the player's progress: `sco
 
 ```objc(Swiftris.swift)
      func endGame() {
-         delegate?.gameDidEnd(self)
+        score = 0
+        level = 1
+        delegate?.gameDidEnd(self)
      }
 
 // #1
