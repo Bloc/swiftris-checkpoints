@@ -20,8 +20,10 @@ SpriteKit is a set of APIs provided by the iOS SDK (software development kit) wh
 
 ### Xcode
 
-Xcode 6 is required for Swift development. [Download Xcode 6](https://developer.apple.com/xcode/downloads/) before continuing.
+Xcode 6 is required for Swift development, [download Xcode 6.1.1](https://developer.apple.com/xcode/downloads/) before continuing.
 
 While it's not required for this book, you may want to consider signing up for the [iOS Developer Program](https://developer.apple.com/programs/ios/). We think the $99 annual fee is wholly worthwhile: it provides access to yet-to-be public software updates and allows you to publish apps to your iPhone and the App Store.
 
-Once you have Xcode downloaded and installed, you're ready to move to the next chapter.
+Once you have Xcode downloaded and installed, you are ready to move to the next chapter.
+
+>**Swiftris was written exclusively for Xcode 6.1.1.** Attempting to follow this tutorial with any version of Xcode other than 6.1.1 is likely to result in syntax or interface errors.
