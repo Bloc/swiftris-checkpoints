@@ -89,9 +89,9 @@ Before proceeding, let's add some convenient helper functions to `Shape.swift` w
 ```objc(Shape.swift)
     final func rotateBlocks(orientation: Orientation) {
         if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
-            for (idx, (columnDiff:Int, rowDiff:Int)) in enumerate(blockRowColumnTranslation) {
-                blocks[idx].column = column + columnDiff
-                blocks[idx].row = row + rowDiff
+            for (idx, diff) in enumerate(blockRowColumnTranslation) {
+                blocks[idx].column = column + diff.columnDiff
+                blocks[idx].row = row + diff.rowDiff
             }
         }
     }
@@ -432,7 +432,7 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
         super.viewDidLoad()
 
         // Configure the view.
-        let skView = view as SKView
+        let skView = view as! SKView
         skView.multipleTouchEnabled = false
 
         // Create and configure the scene.
