@@ -90,7 +90,7 @@ class GameViewController: UIViewController {
 
 -        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
 -            // Configure the view.
--            let skView = self.view as SKView
+-            let skView = self.view as! SKView
 -            skView.showsFPS = true
 -            skView.showsNodeCount = true
 
@@ -174,7 +174,7 @@ override func viewDidLoad() {
     super.viewDidLoad()
 
 +    // Configure the view.
-+    let skView = view as SKView
++    let skView = view as! SKView
 +    skView.multipleTouchEnabled = false
 
 +    // Create and configure the scene.
@@ -185,6 +185,8 @@ override func viewDidLoad() {
 +    skView.presentScene(scene)
 }
 ```
+
+>The `as!` operator is a forced [downcast](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html#//apple_ref/doc/uid/TP40014097-CH22-ID341). The `view` object is of type SKView, but prior to downcasting, our code treated it like a basic UIView. Without downcasting, we are unable to access SKView methods and properties, such as `presentScene(SKScene)`.
 
 In `GameViewController` we've added a member variable, `scene`. Its declaration: `var scene: GameScene!` lets us know that it is a variable, its name is `scene`, its type is `GameScene` and it is a non-optional value which will *eventually* be instantiated. Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. In order to circumvent this requirement we've added an `!` after the type.
 

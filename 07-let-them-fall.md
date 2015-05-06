@@ -22,9 +22,9 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
 +    final func rotateBlocks(orientation: Orientation) {
 +        if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
 // #1
-+            for (idx, (columnDiff:Int, rowDiff:Int)) in enumerate(blockRowColumnTranslation) {
-+                blocks[idx].column = column + columnDiff
-+                blocks[idx].row = row + rowDiff
++            for (idx, diff) in enumerate(blockRowColumnTranslation) {
++                blocks[idx].column = column + diff.columnDiff
++                blocks[idx].row = row + diff.rowDiff
 +            }
 +        }
 +    }
@@ -277,7 +277,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         // Configure the view.
-        let skView = view as SKView
+        let skView = view as! SKView
         skView.multipleTouchEnabled = false
 
         // Create and configure the scene.
