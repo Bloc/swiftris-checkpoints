@@ -186,6 +186,8 @@ override func viewDidLoad() {
 }
 ```
 
+>The `as!` operator is a forced [downcast](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html#//apple_ref/doc/uid/TP40014097-CH22-ID341). The `view` object is of type SKView, but prior to downcasting, our code treated it like a basic UIView. Without downcasting, we are unable to access SKView methods and properties, such as `presentScene(SKScene)`.
+
 In `GameViewController` we've added a member variable, `scene`. Its declaration: `var scene: GameScene!` lets us know that it is a variable, its name is `scene`, its type is `GameScene` and it is a non-optional value which will *eventually* be instantiated. Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. In order to circumvent this requirement we've added an `!` after the type.
 
 In `viewDidLoad()` we assign `scene` as promised, using the initializer we had just written moments ago. We tell it to fill the screen and then ask our view to present that scene to the user. Run Swiftris and you should see a super cool background appear. Not titillating enough for you? Read on to continue the fun.
