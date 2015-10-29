@@ -13,7 +13,7 @@ Without shape, our blocks are aimless colored squares longing for purpose in the
 
 +let NumOrientations: UInt32 = 4
 
-+enum Orientation: Int, Printable {
++enum Orientation: Int, CustomStringConvertible {
 +    case Zero = 0, Ninety, OneEighty, TwoSeventy
 
 +    var description: String {
@@ -46,13 +46,13 @@ Without shape, our blocks are aimless colored squares longing for purpose in the
 +}
 ```
 
-This first piece of code should appear familiar. Once again we created an enumeration helper which will define the shape's orientation. A Tetromino can face one of four directions at any given point, we shall refer to them as `0`, `90`, `180` and `270`. Imagine a circle whose degrees begin at the top and continue clockwise.
+This first piece of code should appear familiar. Once again we created an enumeration helper which will define the shape's orientation. A Tetromino can face one of four directions at any given point, we refer to them as `0`, `90`, `180` and `270`. Imagine a circle whose degrees begin at the top and continue clockwise.
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-rotation-degrees.png)</center>
 
 At 0˚ the piece is at origin and as it rotates clockwise its degree advances along the circumference. That's how we're going to define a shape's orientation. At **#1**, we provided a method capable of returning the next orientation when traveling either clockwise or counterclockwise.
 
-Let's write the shape class itself, shall we?
+Let's write the shape class itself.
 
 ```objc(Shape.swift)
 +// The number of total shape varieties
@@ -64,7 +64,7 @@ Let's write the shape class itself, shall we?
 +let ThirdBlockIdx: Int = 2
 +let FourthBlockIdx: Int = 3
 
-+class Shape: Hashable, Printable {
++class Shape: Hashable, CustomStringConvertible {
 +    // The color of the shape
 +    let color:BlockColor
 
@@ -76,17 +76,17 @@ Let's write the shape class itself, shall we?
 +    var column, row:Int
 
 +    // Required Overrides
-// #1
+// #2
 +    // Subclasses must override this property
 +    var blockRowColumnPositions: [Orientation: Array<(columnDiff: Int, rowDiff: Int)>] {
 +        return [:]
 +    }
-// #2
+// #3
 +    // Subclasses must override this property
 +    var bottomBlocksForOrientations: [Orientation: Array<Block>] {
 +        return [:]
 +    }
-// #3
+// #5
 +    var bottomBlocks:Array<Block> {
 +        if let bottomBlocks = bottomBlocksForOrientations[orientation] {
 +            return bottomBlocks
@@ -96,11 +96,11 @@ Let's write the shape class itself, shall we?
 
 +    // Hashable
 +    var hashValue:Int {
-// #4
-+        return reduce(blocks, 0) { $0.hashValue ^ $1.hashValue }
+// #6
++        return blocks.reduce(0) { $0.hashValue ^ $1.hashValue }
 +    }
 
-+    // Printable
++    // CustomStringConvertible
 +    var description:String {
 +        return "\(color) block facing \(orientation): \(blocks[FirstBlockIdx]), \(blocks[SecondBlockIdx]), \(blocks[ThirdBlockIdx]), \(blocks[FourthBlockIdx])"
 +    }
@@ -113,7 +113,7 @@ Let's write the shape class itself, shall we?
 +        initializeBlocks()
 +    }
 
-// #5
+// #6
 +    convenience init(column:Int, row:Int) {
 +        self.init(column:column, row:row, color:BlockColor.random(), orientation:Orientation.random())
 +    }
@@ -124,32 +124,32 @@ Let's write the shape class itself, shall we?
 +}
 ```
 
-Your project won't compile at the moment and you will certainly see some errors, but we'll get it fixed soon. Both **#1** and **#2** introduce some Swift tools that you'll certainly be interested in. First and foremost we have written these two computed properties and left their results empty. This was done on purpose such that our actual shape classes will `override` them in their respective implementations. You'll see what we mean shortly.
+Your project won't compile at the moment and you will certainly see some errors, but we'll get it fixed soon. Both **#2** and **#3** introduce some Swift tools that you're certain to find interesting. We have written these two computed properties and left their results empty. This was on purpose such that our actual shape classes will `override` them in their respective implementations. You'll see what we mean soon.
 
-**#1**, `blockRowColumnPositions` defines a computed **Dictionary**. A dictionary is defined with square braces – `[…]` – and maps one type of object to another. The first object type listed defines the **key** and the second, a **value**. Keys map one-to-one with values and multiple copies of a single key may not exist.
+**#2**, `blockRowColumnPositions` defines a computed **Dictionary**. We define a dictionary with square braces, `[…]`, and use it to map one object to another. The first object type listed defines the **key** and the second, a **value**. Keys map one-to-one with values and duplicate keys may not exist.
 
 [Peruse Swift Dictionary details here.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Dictionary.html)
 
-We access dictionary values similarly to those of an array by employing square braces. However, our subscripts are now **keys**, and therefore in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
+We access dictionary values similarly to those of an array by employing square braces. Our subscripts are now **keys**, and in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
 
-It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is perfect for passing or returning multiple variables without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is named `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
+It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is perfect for passing or returning more than one variable without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
 
 ```objc
 let arrayOfDiffs = blockRowColumnPositions[Orientation.0]!
 let columnDifference = arrayOfDiffs[0].columnDiff
 ```
 
-Elements found within a dictionary are optional by default, therefore we must unwrap them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
+Elements found within a dictionary are optional by default, so we must unwrap them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
 
 [Can't get enough of tuples? We know that feeling.](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Types.html)
 
-Both **#1** and **#2** return empty values, they're meant for subclasses to provide meaningful data later. At **#3** we wrote a complete computed property which is designed to return the bottom blocks of the shape at its current orientation. This will be useful later when our blocks get physical and start contacting walls and each other.
+Both **#2** and **#3** return empty values, they're meant for subclasses to provide meaningful data later. At **#4** we wrote a computed property that returns the bottom blocks of the shape at its current orientation. This will be useful later when our blocks get physical and start touching walls and each other.
 
-At **#4** we use the `reduce<S : Sequence, U>(sequence: S, initial: U, combine: (U, S.GeneratorType.Element) -> U) -> U` method to iterate through our entire `blocks` array. We exclusively-or each block's `hashValue` together to create a single `hashValue` for the `Shape` they comprise.
+At **#5** we use the `reduce<S : Sequence, U>(sequence: S, initial: U, combine: (U, S.GeneratorType.Element) -> U) -> U` method to iterate through our entire `blocks` array. We exclusive-or (XOR) each block's `hashValue` together to create a single `hashValue` for the `Shape` they comprise.
 
-At **#5** we introduce a special type of initializer. A `convenience` initializer must call down to a standard initializer or otherwise your class will fail to compile. We've placed this one here in order to simplify the initialization process for users of the `Shape` class. It assigns the given `row` and `column` values while generating a random color and a random orientation.
+At **#6** we introduce a special initializer. A `convenience` initializer must call down to a standard initializer or otherwise your class will fail to compile. We've placed this one here to simplify the initialization process for users of the `Shape` class. It assigns the given `row` and `column` values while generating a random color and a random orientation.
 
-[We get it, it'd be *convenient* to read more about those.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
+[We get it, it'd be _convenient_ to read more about those.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
 
 Your `Shape` class has some build errors, let's fix them.
 
@@ -158,9 +158,9 @@ Your `Shape` class has some build errors, let's fix them.
         self.init(column:column, row:row, color:BlockColor.random(), orientation:Orientation.random())
     }
 
-// #1
+// #7
 +    final func initializeBlocks() {
-// #2
+// #8
 +        if let blockRowColumnTranslations = blockRowColumnPositions[orientation] {
 +            for i in 0..<blockRowColumnTranslations.count {
 +                let blockRow = row + blockRowColumnTranslations[i].rowDiff
@@ -177,11 +177,11 @@ func ==(lhs: Shape, rhs: Shape) -> Bool {
 }
 ```
 
-At **#1** we defined a `final` function which means it cannot be overridden by subclasses. This implementation of `initializeBlocks()` is the only one allowed by `Shape` and its subclasses.
+At **#7** we defined a `final` function which means it cannot be overridden by subclasses. `Shape` and its subclasses must use this implementation of `initializeBlocks()`.
 
-At **#2** we introduced conditional assignments. This `if` conditional first attempts to assign an array into `blockRowColumnTranslations` after extracting it from the computed dictionary property. If one is *not* found, the `if` block is not executed.
+At **#8** we introduced conditional assignments. This `if` conditional first attempts to assign an array into `blockRowColumnTranslations` after extracting it from the computed dictionary property. If one is *not* found, the `if` block is not executed.
 
-The following code sample is equivalent to what we've written:
+The following code sample is equal to what we've written:
 
 ```objc
 let blockRowColumnTranslations = blockRowColumnPositions[orientation]
@@ -200,7 +200,7 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 -import Foundation
 +class SquareShape:Shape {
 +    /*
-// #1
+// #9
 +        | 0•| 1 |
 +        | 2 | 3 |
 
@@ -210,7 +210,7 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 
 +    // The square shape will not rotate
 
-// #2
+// #10
 +    override var blockRowColumnPositions: [Orientation: Array<(columnDiff: Int, rowDiff: Int)>] {
 +        return [
 +            Orientation.Zero: [(0, 0), (1, 0), (0, 1), (1, 1)],
@@ -220,7 +220,7 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 +        ]
 +    }
 
-// #3
+// #11
 +    override var bottomBlocksForOrientations: [Orientation: Array<Block>] {
 +        return [
 +            Orientation.Zero:       [blocks[ThirdBlockIdx], blocks[FourthBlockIdx]],
@@ -232,11 +232,11 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 +}
 ```
 
-Thanks to the `Shape` class, defining Tetrominoes with a subclass is fairly trivial. Subclasses must simply provide the distance of each block from the shape's `row` and `column` location with respect to each possible orientation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Consequently, its bottom blocks will always be the third and fourth block as described by the comments at **#1**.
+Thanks to the `Shape` class, defining Tetrominoes with subclasses is trivial. Subclasses must provide the distance of each block from the shape's `row` and `column` location at each possible orientation. A square shape is the easiest, it will not rotate at all since its shape is identical at every orientation. Its bottom blocks will always be the third and fourth block as described by the comments at **#9**.
 
-At **#2** we've overridden the `blockRowColumnPositions` computed property to provide a full dictionary of tuple arrays. Each index of the arrays represents one of the four blocks ordered from block `0` to block `3`. For example, the top-left block location – block `0` – of a square is exactly identical to its `row` and `column` location. Therefore the tuple is `(0, 0)`, `0` column difference and `0` row difference. The second block is always `1` column to the right of the shape's given `column` value, therefore its tuple is always `(1, 0)`.
+At **#10** we've overridden the `blockRowColumnPositions` computed property to provide a full dictionary of tuple arrays. Each index of the arrays represents one of the four blocks ordered from block `0` to block `3`. For example, the top-left block location – block `0` – of a square is identical to its `row` and `column` location. The tuple is `(0, 0)`, `0` column difference and `0` row difference. The second block is always `1` column to the right of the shape's given `column` value, so its tuple is always `(1, 0)`.
 
-Finally, at **#3** we perform a similar `override` by providing a dictionary of bottom block arrays. As was stated earlier, a square shape does not rotate, therefore its bottom-most blocks are consistently the third and fourth blocks as indicated by the comments at **#1**.
+At **#11** we perform a similar `override` by providing a dictionary of bottom block arrays. As stated earlier, a square shape does not rotate, so its bottom-most blocks are consistently the third and fourth blocks as indicated by the comments at **#9**.
 
 You have the opportunity to write the remaining shapes yourself, they are: `TShape`, `LineShape`, `SShape`, `ZShape`, `LShape` and `JShape`. Or… you can read on and copy the remaining shapes into your project, try it yourself for a fun challenge. You can always come back and use our versions if you like.
 

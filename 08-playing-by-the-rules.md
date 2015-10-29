@@ -2,9 +2,9 @@
 
 ## Playing by the Rules
 
-Even a game as seemingly quaint as Swiftris abides by a complex set of rules. Start considering all of the possibilities which must be accounted for by our game: blocks may not collide, blocks must not fall further than the game board or exceed its column boundaries, points are earned for each line formed, remaining blocks must fall after lines beneath them have been removed, the list goes on.
+Even a game as seemingly quaint as Swiftris abides by a complex set of rules. Start considering the laws we must account for in our game: blocks may not collide, blocks must not fall further than the game board or exceed their column boundaries, players earn points for each line formed, remaining blocks must fall after lines beneath them fall, the list goes on.
 
-This checkpoint will establish the rules and mechanics by which Swiftris is played. We'll begin by  creating a custom protocol. As we've discussed earlier, `Hashable` and `Printable` are both protocols which several of our classes adhere to. We need a protocol specifically designed to receive updates from the `Swiftris` class:
+This checkpoint will establish the rules and mechanics of Swiftris. We'll begin by creating a custom protocol. As we've discussed earlier, `Hashable` and `CustomStringConvertible` are protocols which some of our classes adhere to. We need to create a protocol specifically designed to receive updates from the `Swiftris` class:
 
 ```objc(Swiftris.swift)
 let PreviewRow = 1
@@ -36,11 +36,11 @@ class Swiftris {
 +   var delegate:SwiftrisDelegate?
 ```
 
-The `delegate` will be notified of several events throughout the course of the game. In our case, `GameViewController` will implement and attach itself as `delegate` in order to update the user interface and react to game state changes whenever something occurs inside of `Swiftris.swift`.
+`Swiftris` notifies the `delegate` of events throughout the course of the game. In our case, `GameViewController` will attach itself as the `delegate` to update the user interface and react to game state changes whenever something occurs inside of the `Swiftris` class.
 
-Swiftris will work on a trial-and-error basis. The user interface - `GameViewController` - will ask `Swiftris` to move its falling shape either down, left, or right. `Swiftris` will accept this request, move the shape and then detect whether or not its new position is legal. If so, the shape will remain, otherwise it will revert to its original location.
+Swiftris will work on a trial-and-error basis. The user interface, `GameViewController`, will ask `Swiftris` to move its falling shape either down, left, or right. `Swiftris` will accept this request, move the shape and then detect whether its new position is legal. If so, the shape will remain, otherwise it will revert to its original location.
 
-Let's add a few methods to detect if and when a shape is breaking the rules:
+Let's add methods to detect when a shape breaks the rules:
 
 ```objc(Swiftris.swift)
     func beginGame() {
@@ -80,23 +80,23 @@ Let's add a few methods to detect if and when a shape is breaking the rules:
 +    }
 ```
 
-At **#1** we added some logic to `newShape()` which may now detect the ending of a Switris game. The game ends when a new shape located at the designated starting location collides with existing blocks. This is the case where the player no longer has enough room to move the new shape, and therefore, we must terminate their tower of terror.
+At **#1** we added some logic to `newShape()` which may now detect the ending of a Switris game. The game ends when a new shape located at the designated starting location collides with existing blocks. This is the case where the player no longer has room to move the new shape, and we must destroy their tower of terror.
 
-At **#2** we added a function for checking both block boundary conditions. This first determines whether or not a block exceeds the legal size of the game board. The second determines whether or not a block's current location overlaps with an existing block. Remember, Swiftris will function by *trial-and-error*. We'll send our shapes to all sorts of bizarre places before we check whether or not they are legally allowed to be there.
+At **#2** we added a function for checking both block boundary conditions. This first determines whether a block exceeds the legal size of the game board. The second determines whether a block's current location overlaps with an existing block. Remember, Swiftris will function by *trial-and-error*. We'll send our shapes to all sorts of bizarre places before we check whether they are legally allowed to be there.
 
 Before proceeding, let's add some convenient helper functions to `Shape.swift` which will aide in `Switris`' ability to move and rotate each shape at will:
 
 ```objc(Shape.swift)
     final func rotateBlocks(orientation: Orientation) {
         if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
-            for (idx, diff) in enumerate(blockRowColumnTranslation) {
+            for (idx, diff) in blockRowColumnTranslation.enumerate() {
                 blocks[idx].column = column + diff.columnDiff
                 blocks[idx].row = row + diff.rowDiff
             }
         }
     }
 
-// #1
+// #3
 +    final func rotateClockwise() {
 +        let newOrientation = Orientation.rotate(orientation, clockwise: true)
 +        rotateBlocks(newOrientation)
@@ -135,7 +135,7 @@ Before proceeding, let's add some convenient helper functions to `Shape.swift` w
     }
 ```
 
-These new functions should be self explanatory. At **#1** we created a couple methods for quickly rotating a shape one turn clockwise or counterclockwise, this will come in handy when testing a potential rotation and reverting it if it breaks the rules. Below that we've added convenience functions which allow us to move our shapes incrementally in any direction.
+These new functions should be self explanatory. At **#3** we created a couple methods for rotating a shape one turn clockwise or counterclockwise, this will come in handy when testing a potential rotation and reverting it if it breaks the rules. Below that we've added convenience functions which allow us to move our shapes incrementally in any direction.
 
 Let's put those new functions to good use by giving the user interface access to shape manipulation:
 
@@ -154,7 +154,7 @@ Let's put those new functions to good use by giving the user interface access to
         return false
     }
 
-// #1
+// #4
 +    func dropShape() {
 +        if let shape = fallingShape {
 +            while detectIllegalPlacement() == false {
@@ -165,7 +165,7 @@ Let's put those new functions to good use by giving the user interface access to
 +        }
 +    }
 
-// #2
+// #5
 +    func letShapeFall() {
 +        if let shape = fallingShape {
 +            shape.lowerShapeByOneRow()
@@ -185,7 +185,7 @@ Let's put those new functions to good use by giving the user interface access to
 +        }
 +    }
 
-// #3
+// #6
 +    func rotateShape() {
 +        if let shape = fallingShape {
 +            shape.rotateClockwise()
@@ -197,7 +197,7 @@ Let's put those new functions to good use by giving the user interface access to
 +        }
 +    }
 
-// #4
+// #7
 +    func moveShapeLeft() {
 +        if let shape = fallingShape {
 +            shape.shiftLeftByOneColumn()
@@ -221,20 +221,20 @@ Let's put those new functions to good use by giving the user interface access to
 +    }
 ```
 
-Dropping a shape is the act of sending it plummeting towards the bottom of the game board. The user will elect to do this when their patience for the slow-moving Tetromino wears thin. **#1** provides a convenient function to accomplish this. It will continue dropping the shape by a single row until an illegal placement state is reached, at which point it will raise it and then notify the delegate that a drop has occurred.
+Dropping a shape is the act of sending it plummeting towards the bottom of the game board. The user will elect to do this when their patience for the slow-moving Tetromino wears thin. **#4** provides a convenient function to achieve this. It will continue dropping the shape by a single row until it detects an illegal placement state, at which point it will raise it and then notify the delegate that a drop has occurred.
 
-All of these functions use conditional assignments before taking action, this guarantees that regardless of what state the user interface is in, `Swiftris` will never operate on invalid shapes.
+These functions use conditional assignments before taking action, this guarantees that regardless of what state the user interface is in, `Swiftris` will never operate on invalid shapes.
 
-At **#2** we've defined a function to be called once every tick. This attempts to lower the shape by one row and ends the game if it fails to do so without finding legal placement for it. Don't worry about the missing functions here, we'll create them soon.
+At **#5** we've defined a function to call once every tick. This attempts to lower the shape by one row and ends the game if it fails to do so without finding legal placement for it. Don't worry about the missing functions here, we'll create them soon.
 
-Our user interface will allow the player to rotate the shape clockwise as it falls and the function at **#3** implements that behavior. `Swiftris` attempts to rotate the shape clockwise. If its new block positions violate the boundaries of the game or overlap with settled blocks, we revert the rotation and return. Otherwise, we let the delegate know that the shape has moved.
+Our user interface will allow the player to rotate the shape clockwise as it falls and the function at **#6** implements that behavior. `Swiftris` attempts to rotate the shape clockwise. If its new block positions violate the boundaries of the game or overlap with settled blocks, we revert the rotation and return. Otherwise, we let the delegate know that the shape has moved.
 
-Lastly, the player will enjoy the privilege of moving the shape either leftwards or rightwards. The functions written at **#4** permit such behavior and follow the same pattern found in `rotateShape`.
+Lastly, the player will enjoy the privilege of moving the shape either leftwards or rightwards. The functions written at **#7** permit such behavior and follow the same pattern found in `rotateShape`.
 
-I bet you're tired of looking at those errors, let's fix them by adding a few missing functions:
+I bet you're tired of looking at those errors, let's fix them by adding the missing functions:
 
 ```objc(Swiftris.swift)
-// #1
+// #8
 +    func settleShape() {
 +        if let shape = fallingShape {
 +            for block in shape.blocks {
@@ -245,7 +245,7 @@ I bet you're tired of looking at those errors, let's fix them by adding a few mi
 +        }
 +    }
 
-// #2
+// #9
 +    func detectTouch() -> Bool {
 +        if let shape = fallingShape {
 +            for bottomBlock in shape.bottomBlocks {
@@ -273,13 +273,13 @@ I bet you're tired of looking at those errors, let's fix them by adding a few mi
     }
 ```
 
-At **#1**, `settleShape()` adds the falling shape to the collection of blocks maintained by `Swiftris`. Once the falling shape's blocks are part of the game board, `fallingShape` is nullified and the delegate is notified of a new shape settling into the game board.
+At **#8**, `settleShape()` adds the falling shape to the collection of blocks maintained by `Swiftris`. Once the falling shape's blocks are part of the game board, we nullify `fallingShape` and notify the delegate of a new shape settling onto the game board.
 
-`Swiftris` needs to be able to tell when a shape should settle. This happens under two conditions: when one of the shapes' bottom blocks is located immediately above a block on the game board or when one of those same blocks has reached the bottom of the game board. The function at **#2** properly detects this occurrence and returns `true` when detected.
+`Swiftris` needs to be able to tell when a shape should settle. This happens under two conditions: when one of the shapes' bottom blocks touches a block on the game board or when one of those same blocks has reached the bottom of the game board. The function at **#9** properly detects this occurrence and returns `true` when detected.
 
 ### Scoring
 
-Most, if not all games involve some sort of scoring mechanism; a means by which to garner points. Yes, even a game as sophisticated and worldly as Swiftris must admit that its players feed off of small psychological rewards, meaningless as they may be. Let's have the `Swiftris` class track the player's current score and level them up as they reach digital milestones:
+Most, if not all games involve some sort of scoring mechanism; a means by which to garner points. Yes, even a game as sophisticated and well-traveled as Swiftris must admit that its players feed off of small psychological rewards, meaningless as they may be. Let's have the `Swiftris` class track the player's current score and level them up as they reach digital milestones:
 
 ```objc(Swiftris.swift)
  let PreviewColumn = 12
@@ -317,7 +317,7 @@ Most, if not all games involve some sort of scoring mechanism; a means by which 
     }
 ```
 
-We added a couple variables to help us keep track of the player's progress: `score` and `level`. Score represents their cumulative point total. Level represents which level of Swiftris they're currently playing on. We'll need a function capable of deducing if and when a solid horizontal line has been formed; that's the only way a player can earn points in `Swiftris`:
+We added a couple variables to help us keep track of the player's progress: `score` and `level`. Score represents their cumulative point total. Level represents which level of Swiftris they're playing on. We'll need a function capable of deducing when the player has formed a solid horizontal line; that's how a player earns points in `Swiftris`:
 
 ```objc(Swiftris.swift)
      func endGame() {
@@ -326,12 +326,12 @@ We added a couple variables to help us keep track of the player's progress: `sco
         delegate?.gameDidEnd(self)
      }
 
-// #1
+// #10
 +    func removeCompletedLines() -> (linesRemoved: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>) {
 +        var removedLines = Array<Array<Block>>()
 +        for var row = NumRows - 1; row > 0; row-- {
 +            var rowOfBlocks = Array<Block>()
-// #2
+// #11
 +            for column in 0..<NumColumns {
 +                if let block = blockArray[column, row] {
 +                    rowOfBlocks.append(block)
@@ -345,11 +345,11 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +            }
 +        }
 
-// #3
+// #12
 +        if removedLines.count == 0 {
 +            return ([], [])
 +        }
-// #4
+// #13
 +        let pointsEarned = removedLines.count * PointsPerLine * level
 +        score += pointsEarned
 +        if score >= level * LevelThreshold {
@@ -360,7 +360,7 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +        var fallenBlocks = Array<Array<Block>>()
 +        for column in 0..<NumColumns {
 +            var fallenBlocksArray = Array<Block>()
-// #5
+// #14
 +            for var row = removedLines[0][0].row - 1; row > 0; row-- {
 +                if let block = blockArray[column, row] {
 +                    var newRow = row
@@ -381,23 +381,23 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +    }
 ```
 
-This looks like a long and unwieldy function, so let's walk through it like we would through tall grass; holding hands and wearing overalls. At **#1**, we defined a function which returns yet another tuple. This time it's composed of two arrays: `linesRemoved` and `fallenBlocks`. `linesRemoved` maintains each row of blocks which the user has filled in completely. 
+This looks like a long and unwieldy function, so let's walk through it like we would through tall grass; holding hands and wearing overalls. At **#10**, we defined a function which returns yet another tuple. This time it's composed of two arrays: `linesRemoved` and `fallenBlocks`. `linesRemoved` maintains each row of blocks which the user has filled in.
 
-At **#2** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`; therefore `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set - `10` blocks in total - it counts that as a removed line and adds it to the return variable.
+At **#11** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`, `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set - `10` blocks in total - it counts that as a removed line and adds it to the return variable.
 
-At **#3** we check and see if we recovered any lines at all, if not, we return empty arrays immediately.
+At **#12** we check and see if we recovered any lines at all, if not, we return empty arrays.
 
-At **#4**, we add points to the player's score based on the number of lines they've created and their level. If their points exceed their level times 1000, they level up and our delegate is informed.
+At **#13**, we add points to the player's score based on the number of lines they've created and their level. If their points exceed their level times 1000, they level up and we inform the delegate.
 
-At **#5** we do something a bit murky-looking. Starting in the left-most column and immediately above the bottom-most removed line, we count upwards towards the top of the game board. As we do so, we take each remaining block we find on the game board and lower it as far as possible. `fallenBlocks` is an array of arrays, each sub-array is filled with blocks that fell to a new position as a result of the user clearing lines beneath them.
+At **#14** we do something a bit murky-looking. Starting in the left-most column and above the bottom-most removed line, we count upwards towards the top of the game board. As we do so, we take each remaining block we find on the game board and lower it as far as possible. `fallenBlocks` is an array of arrays, we've filled each sub-array with blocks that fell to a new position as a result of the user clearing lines beneath them.
 
 Woo, that was a doozy… Let's take a break by enjoying some cuteness:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/09-its-only-logical-puppy.gif)</center>
 
-#### One Last Thing
+### One Last Thing
 
-`Swiftris` is almost ready, it just needs one small function which will allow the user interface to remove all of the blocks and send them straight into the digital abyss:
+`Swiftris` is almost ready, it just needs one small function which will allow the user interface to remove the blocks and send them straight into the digital abyss:
 
 ```objc(Swiftris.swift)
 +    func removeAllBlocks() -> Array<Array<Block>> {
@@ -460,7 +460,7 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
 
 ```objc(GameViewController.swift)
      func didTick() {
-// #1
+// #15
 +        swiftris.letShapeFall()
 -        swiftris.fallingShape?.lowerShapeByOneRow()
 -        scene.redrawShape(swiftris.fallingShape!, completion: {})
@@ -471,7 +471,7 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
 +        if let fallingShape = newShapes.fallingShape {
 +            self.scene.addPreviewShapeToScene(newShapes.nextShape!) {}
 +            self.scene.movePreviewShape(fallingShape) {
-// #2
+// #16
 +                self.view.userInteractionEnabled = true
 +                self.scene.startTicking()
 +            }
@@ -507,16 +507,16 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
 +        nextShape()
 +    }
 
-// #3
+// #17
 +    func gameShapeDidMove(swiftris: Swiftris) {
 +        scene.redrawShape(swiftris.fallingShape!) {}
 +    }
 ```
 
-At **#1** we substituted our previous efforts with `Swiftris`' `letShapeFall()` function, precisely what we need at each tick.
+At **#15** we substituted our previous efforts with `Swiftris`' `letShapeFall()` function, precisely what we need at each tick.
 
-At **#2** we introduced a boolean which allows us to shut down interaction with the view. Regardless of what the user does to the device at this point, they will not be able to manipulate Switris in any way. This is useful during intermediate states when blocks are being animated, shifted around or calculated. Otherwise, a well-timed user interaction may cause an unpredictable game state to occur.
+At **#16** we introduced a boolean which allows us to shut down interaction with the view. Regardless of what the user does to the device at this point, they will not be able to manipulate Switris in any way. This is useful during intermediate states when we animate or shift blocks, and perform calculations. Otherwise, a well-timed user interaction may cause an unpredictable game state to occur.
 
-Lastly, at **#3** all that is necessary to do after a shape has moved is to redraw its representative sprites at their new locations.
+Lastly, at **#17** all that is necessary to do after a shape has moved is to redraw its representative sprites at their new locations.
 
-Run Swiftris to discover that your shapes are aware of one another as well as the floor! It may not be overly exciting but at least the laws of physics are being obeyed.
+Run Swiftris to discover that your shapes are aware of one another as well as the floor! It may not be overly exciting but at least Swiftris obeys the laws of physics.

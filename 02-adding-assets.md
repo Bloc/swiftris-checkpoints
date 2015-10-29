@@ -1,6 +1,6 @@
 ## Adding Assets
 
-Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game. However, you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building Swiftris, we must unceremoniously delete every unnecessary file provided to us by Xcode.
+Don't get me wrong, *Spin-The-Bottle: Space Edition* was a great game, but you didn't start this Bloc Book to make that. At least I hope not, if so, please stop now because your quest is over. For those of you still interested in building Swiftris, we must unceremoniously delete every unnecessary file provided to us by Xcode.
 
 Open Project Navigator by either clicking the designated icon or pressing <key>⌘ + 1</key>:
 
@@ -20,7 +20,7 @@ To get rid of the aimless space ship once and for all, click the `Images.xcasset
 
 ### Trimming The Fat
 
-Having slaughtered those files which are of no use, we must now purge our project of any and all *code* which we do not require. There's no need to have lingering source code designed to support inept space pilots. Delete all of the lines marked in red within their corresponding files:
+Having slaughtered those files which are of no use, we must now purge our project of any and all *code* which we do not require. There's no need to have lingering source code designed to support inept space pilots. Delete the lines marked in red within their corresponding files:
 
 ```objc(GameScene.swift)
 import SpriteKit
@@ -127,24 +127,25 @@ class GameViewController: UIViewController {
 }
 ```
 
-### The Sights And Sounds Of Swiftris
+### The Sights and Sounds of Swiftris
 
-In order to experience Swiftris in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your `Desktop` or `Downloads` folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the `Sounds` folder into the Project Navigator immediately above the `Supporting Files` directory. The following window should appear:
+To experience Swiftris in all its visual and auditory glory, we're going to need images and sounds, respectively. [Download the necessary assets](http://bloc-books.s3.amazonaws.com/swiftris/swiftris-assets.zip) to your **Desktop** or **Downloads** folder, anywhere other than the Swiftris project directory. Unzip the archive and perform a drag-and-drop of the **Sounds** folder into the Project Navigator above the **Supporting Files** directory. The following window should appear:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-copy-if-necessary.png)</center>
 
-Make sure to check the **Copy items if necessary** option. This will place a copy of the directory and all of the sound files within it into your Swiftris project and directory. Click **Finish**. Repeat this task with the `Sprites.atlas` folder. Next, select all of the images found within the `Images` directory and drag them into the `Supporting Files` folder found in Project Navigator. Once again, make sure that the **Copy items if needed** checkbox is checked. Finally, click on `Images.xcassets` to open the window and highlight `AppIcon`. Drag and drop the appropriate `icon` file from the downloaded "Blocs" folder into its respective slot: 29pt, 40pt and 60pt.
+Make sure to check the **Copy items if necessary** option. This will place a copy of the directory, and the sound files within it, into your Swiftris project and directory. Click **Finish**. Repeat this task with the **Sprites.atlas** folder. Next, select the images found within the **Images** directory and drag them into the **Supporting Files** folder found in Project Navigator.
 
-All this dragging and dropping has my clickin' hand beat, let's just code already…
+Once again, make sure you've checked the **Copy items if needed** box. Lastly, click on **Images.xcassets** to open the window and highlight **AppIcon**. Drag and drop the appropriate **icon** file from the downloaded **Blocs** folder into its respective slot: 29pt, 40pt and 60pt.
 
-### Start At The Back
+All this dragging and dropping has my clicking hand beat, let's just code already!
 
-Let's put those new background images to work. We'll begin by establishing `GameScene` inside of `GameViewController`. `GameScene` will be responsible for displaying everything for Swiftris - it will render the tetrominos on screen, the background, and the game board. Furthermore, `GameScene` will be responsible for playing the sounds and keeping track of the time.
+### Start at the Back
 
-`GameViewController`, on the other hand, will be responsible for handling user input and communicating between `GameScene` and a game logic class you'll write soon.
+Let's put those new background images to work. We'll begin by establishing `GameScene` inside of `GameViewController`. `GameScene` will be responsible for displaying everything for Swiftris: it will render the Tetrominos, the background, and the game board. Furthermore, `GameScene` will be responsible for playing the sounds and keeping track of the time.
 
-> If you're working with Swift for the first time, we highly encourage you to type each line by hand in order to get a feel for the language in your fingers… it sounds dirty but it's good for you.
+`GameViewController` will be responsible for handling user input and communicating between `GameScene` and a game logic class you'll write soon.
 
+> If you're working with Swift for the first time, we highly encourage you to type each line by hand to get a feel for the language in your fingers… it sounds dirty but it's good for you.
 
 ```objc(GameScene.swift)
 +required init(coder aDecoder: NSCoder) {
@@ -163,9 +164,9 @@ Let's put those new background images to work. We'll begin by establishing `Game
 +}
 ```
 
-SpriteKit is based on OpenGL and therefore its coordinate system is opposite to iOS' native cocoa coordinates. `0, 0` in SpriteKit is the bottom-left corner. Swiftris will be drawn from the top down so therefore we anchor our game in the top-left corner of the screen: `0, 1.0`. We then create an `SKSpriteNode` capable of representing our background image and we add it to the scene.
+OpenGL powers SpriteKit so its coordinate system is opposite to iOS' native Cocoa coordinates. `(0, 0)` in SpriteKit is the bottom-left corner. We will draw Swiftris from the top down so we anchor our game in the top-left corner of the screen: `(0, 1.0)`. We then create an `SKSpriteNode` capable of representing our background image and we add it to the scene.
 
->`background` is the variable's name, its type is inferred to be that of `SKSpriteNode` and the keyword `let` indicates that it can not be re-assigned. `let` is akin to Java's `final`.
+>`background` is the variable's name, Swift infers its type to be that of `SKSpriteNode` and the keyword `let` indicates that it can not be re-assigned. `let` is akin to Java's `final`.
 
 ```objc(GameViewController.swift)
 +var scene: GameScene!
@@ -186,8 +187,10 @@ override func viewDidLoad() {
 }
 ```
 
->The `as!` operator is a forced [downcast](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html#//apple_ref/doc/uid/TP40014097-CH22-ID341). The `view` object is of type SKView, but prior to downcasting, our code treated it like a basic UIView. Without downcasting, we are unable to access SKView methods and properties, such as `presentScene(SKScene)`.
+>The `as!` operator is a forced [downcast](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html#//apple_ref/doc/uid/TP40014097-CH22-ID341). The `view` object is of type `SKView`, but before downcasting, our code treated it like a basic `UIView`. Without downcasting, we are unable to access `SKView` methods and properties, such as `presentScene(SKScene)`.
 
-In `GameViewController` we've added a member variable, `scene`. Its declaration: `var scene: GameScene!` lets us know that it is a variable, its name is `scene`, its type is `GameScene` and it is a non-optional value which will *eventually* be instantiated. Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. In order to circumvent this requirement we've added an `!` after the type.
+In `GameViewController` we've added a member variable, `scene`. Its declaration: `var scene: GameScene!` lets us know that it's a variable, its name is `scene`, its type is `GameScene` and it's a non-optional value which we will assign at _some_ point.
+
+Swift typically enforces instantiation either in-line where you declare the variable or during the initializer, `init…`. To avoid this rule, we've added an `!` after the type.
 
 In `viewDidLoad()` we assign `scene` as promised, using the initializer we had just written moments ago. We tell it to fill the screen and then ask our view to present that scene to the user. Run Swiftris and you should see a super cool background appear. Not titillating enough for you? Read on to continue the fun.

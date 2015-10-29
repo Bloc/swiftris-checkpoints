@@ -1,7 +1,7 @@
 # Switfris
 ### A Guide to Building Tetris in Swift Using SpriteKite
 
-Welcome to Swiftris. Here you will find the content which [Bloc's original Swiftris book](https://www.bloc.io/swiftris-build-your-first-ios-game-with-swift) is composed of. Each checkpoint corresponds to a markdown file found within this repository. The [completed version of Swiftris](https://github.com/Bloc/swiftris) is available on GitHub as well.
+Welcome to Swiftris. Here you will find the content from [Bloc's original Swiftris book](https://www.bloc.io/swiftris-build-your-first-ios-game-with-swift). Each checkpoint corresponds to a markdown file found within this repository. The [completed version of Swiftris](https://github.com/Bloc/swiftris) is available on GitHub as well.
 
 This is an educational resource meant for all, feel free to share it with those who have little to no programming experience.
 
@@ -25,7 +25,7 @@ Bloc is the perfect combination of top quality resources and one-to-one mentorsh
 | **Let Them Fall** | [`07-let-them-fall.md`](https://github.com/Bloc/swiftris-checkpoints/blob/master/07-let-them-fall.md) | Add the logic required to support the descent of an active Shape object |
 | **Playing by the Rules** | [`08-playing-by-the-rules.md`](https://github.com/Bloc/swiftris-checkpoints/blob/master/08-playing-by-the-rules.md) | Introduce a significant portion of Swiftris' game logic |
 | **Touch Me, Move Me** | [`09-touch-me-move-me.md`](https://github.com/Bloc/swiftris-checkpoints/blob/master/09-touch-me-move-me.md) | Add gesture detection to Swiftris, permit user control |
-| **Adding Flare** | [`10-adding-flare.md`](https://github.com/Bloc/swiftris-checkpoints/blob/master/10-adding-flare.md) | Finally, add fanciful animations and visual elements for displaying the player's level and score |
+| **Adding Flair** | [`10-adding-flair.md`](https://github.com/Bloc/swiftris-checkpoints/blob/master/10-adding-flair.md) | Add fanciful animations and visual elements for displaying the player's level and score |
 
 ## Other Bloc Books
 

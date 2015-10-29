@@ -2,13 +2,13 @@
 
 If you've played any version of Tetris before, you expect that a piece will drop by one row periodically at a given time interval. Pieces perilously lower themselves towards your doom, unstoppable by all that is right in the world… So! Swiftris will be no different, our game will mimic this behavior.
 
-A class which extends `SKScene` inherits the `update(currentTime: CFTimeInterval)` function. `update` is invoked every *frame.* A frame can be thought of as a single image presented to the user. Like a frame found in a cat video, it is a small time-slice of cat content with respect to the whole cat-sperience. Smooth-running games have higher frame rates; about 60 frames per second or more. Slower games typically plummet below a dismal 30 fps.
+A class which extends `SKScene` inherits the `update(currentTime: CFTimeInterval)` function. iOS invokes `update` every *frame*. A frame is a single image presented to the user. Like a frame found in a cat video, it's a small time-slice of cat content compared to the whole cat-sperience. Smooth-running games have higher frame rates; about 60 frames per second or more. Slower games typically plummet below a dismal 30 fps.
 
-A game looks slow when our eyes begin to perceive each individual frame; this is because of a concept known as discrete motion. Here's an example of identical content playing at various frame rates:
+A game looks slow when our eyes begin to perceive each individual frame; this is because of discrete motion. Here's an example of identical content playing at different frame rates:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/05-a-ticking-clock-frame-rate-comparison.gif)</center>
 
-Let's take advantage of the `update` method to discover if and when a time interval has passed:
+Let's take advantage of the `update` method to discover if a time interval has passed:
 
 ```objc(GameScene.swift)
 import SpriteKit
@@ -39,12 +39,12 @@ class GameScene: SKScene {
     }
 
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        /* Called before rendering each frame */
 // #3
 +        if lastTick == nil {
 +            return
 +        }
-+        var timePassed = lastTick!.timeIntervalSinceNow * -1000.0
++        let timePassed = lastTick!.timeIntervalSinceNow * -1000.0
 +        if timePassed > tickLengthMillis {
 +            lastTick = NSDate()
 +            tick?()
@@ -62,19 +62,23 @@ class GameScene: SKScene {
 }
 ```
 
-First, we define a new constant at `#1`, `TickLengthLevelOne`. This variable will represent the slowest speed at which our shapes will travel. We've set it to `600` milliseconds, which means that every 6/10<super>ths</super> of a second, our shape should descend by one row. At `#2` you can see we've defined a few variables. `tickLengthMillis` and `lastTick` look similar to declarations we've seen before: one being the `GameScene`'s current tick length – set to `TickLengthLevelOne` by default – and the other will track the last time we experienced a tick, an `NSDate` object.
+First, we define a new constant at **#1**, `TickLengthLevelOne`. This variable will represent the slowest speed at which our shapes will travel. We've set it to `600` milliseconds, which means that every 6/10<super>ths</super> of a second, our shape should descend by one row.
 
-However, `tick:(() -> ())?` looks horrifying… `tick` is what's known as a *closure* in Swift. A closure is essentially a block of code that performs a function, and Swift refers to functions as  closures. In defining `tick`, its type is `(() -> ())?` which means that it's a closure which takes no parameters and returns nothing. Its question mark indicates that it is optional and therefore may be `nil`.
+At **#2** you can see we've defined some variables. `tickLengthMillis` and `lastTick` look like declarations we've seen before: one being the `GameScene`'s current tick length, set to `TickLengthLevelOne` by default, and the other will track the last time we experienced a tick, an `NSDate` object.
+
+`tick:(() -> ())?` looks horrifying… `tick` is what's known as a *closure* in Swift. A closure is essentially a block of code that performs a function, and Swift refers to functions as closures. In defining `tick`, its type is `(() -> ())?` which means that it's a closure which takes no parameters and returns nothing. Its question mark indicates that it's optional and may be `nil`.
 
 [Learn more about Swift closures](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Closures.html)
 
-At `#3` we'll put our new member variables to work. If `lastTick` is missing, we are in a paused state, not reporting elapsed ticks to anyone, therefore we simply return. However, if `lastTick` is present we recover the time passed since the last execution of `update` by invoking `timeIntervalSinceNow` on our `lastTick` object. Functions on objects are invoked using *dot syntax* in Swift.
+At **#3** we'll put our new member variables to work. If `lastTick` is missing, we are in a paused state, not reporting elapsed ticks to anyone, so we return. But if `lastTick` is present we recover the time passed since the last execution of `update` by invoking `timeIntervalSinceNow` on our `lastTick` object. We invoke functions on objects using *dot syntax* in Swift.
 
 [Read more about dot-syntax](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html)
 
-What's special about our invocation here is the exclamation mark, `!`. This symbol is required if the object in question is an optional type. Before we can access it, we must de-reference the optional by placing an exclamation mark immediately after its name. We multiply the result by `-1000` in order to get a positive millisecond value.
+What's special about our invocation here is the exclamation mark, `!`. Before we can access it, we must de-reference the optional by placing an exclamation after its name. We multiply the result by `-1000` to get a positive millisecond value.
 
-We then check if the time passed has exceeded our `tickLengthMillis` variable. If enough time has elapsed, we must report a tick. We do so by first updating our last known tick time to the present and then invoking our closure. The syntax we use is conditioned on whether or not `tick` is present. By placing a `?` after the variable name, we are asking Swift to first check if `tick` exists and if so, invoke it with no parameters. It is shorthand for the following statement:
+We then check if the time passed has exceeded our `tickLengthMillis` variable. If enough time has elapsed, we must report a tick. We do so by first updating our last known tick time to the present and then invoking our closure.
+
+By placing a `?` after the variable name, we are asking Swift to first check if `tick` exists and if so, invoke it with no parameters. It's shorthand for the following statements:
 
 ```objc
 if tick != nil {
@@ -82,4 +86,4 @@ if tick != nil {
 }
 ```
 
-Lastly, at `#4` we provide accessor methods to let external classes stop and start the ticking process, something we'll make use of later in order to keep pieces from falling at key moments.
+Lastly, at **#4** we provide accessor methods to let external classes stop and start the ticking process, something we'll make use of later to keep pieces from falling at key moments.
