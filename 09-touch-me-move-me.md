@@ -7,7 +7,7 @@
 
 *Let's get physical*, dear reader. Now that you've had your fill of vaguely touch-related references, it's time to touch the screen. No, take your fingers off of your computer monitor, we meant your iPhone's screen. Swiftris does not force the user to idly watch as shapes descend with no purpose. That's modern art and, as Indiana Jones would say, "It belongs in a museum!"
 
-To make Swiftris interactive, we'll use three `UIGestureRecognizer` objects. They will inform our `GameViewController` when a user interaction occurs, specifically those which Swiftris may take advantage of. Let's begin by adding an `UITapGestureDetector` to our view. Open `Main.storyboard`. Your screen should resemble the following:
+To make Swiftris interactive, we'll use three `UIGestureRecognizer` objects. They will inform our `GameViewController` when a user interaction occurs, specifically those which Swiftris may take advantage of. Let's begin by adding an `UITapGestureRecognizer` to our view. Open `Main.storyboard`. Your screen should resemble the following:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/09-honestys-too-much-xcode-1.png)</center>
 
