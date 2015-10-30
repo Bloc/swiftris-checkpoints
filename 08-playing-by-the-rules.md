@@ -4,16 +4,16 @@
 
 Even a game as seemingly quaint as Swiftris abides by a complex set of rules. Start considering the laws we must account for in our game: blocks may not collide, blocks must not fall further than the game board or exceed their column boundaries, players earn points for each line formed, remaining blocks must fall after lines beneath them fall, the list goes on.
 
-This checkpoint will establish the rules and mechanics of Swiftris. We'll begin by creating a custom protocol. As we've discussed earlier, `Hashable` and `CustomStringConvertible` are protocols which some of our classes adhere to. We need to create a protocol specifically designed to receive updates from the `Swiftris` class:
+This checkpoint will establish the rules and mechanics of Swiftris. We'll begin by creating a custom protocol. As we've discussed earlier, `Hashable` and `CustomStringConvertible` are protocols which some of our classes conform to. We need to create a protocol specifically designed to receive updates from the `Swiftris` class:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
 let PreviewRow = 1
 
 +protocol SwiftrisDelegate {
 +    // Invoked when the current round of Swiftris ends
 +    func gameDidEnd(swiftris: Swiftris)
 
-+    // Invoked immediately after a new game has begun
++    // Invoked after a new game has begun
 +    func gameDidBegin(swiftris: Swiftris)
 
 +    // Invoked when the falling shape has become part of the game board
@@ -42,7 +42,7 @@ Swiftris will work on a trial-and-error basis. The user interface, `GameViewCont
 
 Let's add methods to detect when a shape breaks the rules:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
     func beginGame() {
         if (nextShape == nil) {
             nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
@@ -55,7 +55,7 @@ Let's add methods to detect when a shape breaks the rules:
         nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
         fallingShape?.moveTo(StartingColumn, row: StartingRow)
 // #1
-+        if detectIllegalPlacement() {
++        guard detectIllegalPlacement() == false else {
 +            nextShape = fallingShape
 +            nextShape!.moveTo(PreviewColumn, row: PreviewRow)
 +            endGame()
@@ -66,18 +66,19 @@ Let's add methods to detect when a shape breaks the rules:
 
 // #2
 +    func detectIllegalPlacement() -> Bool {
-+        if let shape = fallingShape {
-+            for block in shape.blocks {
-+                if block.column < 0 || block.column >= NumColumns
-+                    || block.row < 0 || block.row >= NumRows {
-+                    return true
-+                } else if blockArray[block.column, block.row] != nil {
-+                    return true
-+                }
++        guard let shape = fallingShape else {
++            return false
++        }
++        for block in shape.blocks {
++            if block.column < 0 || block.column >= NumColumns
++                || block.row < 0 || block.row >= NumRows {
++                return true
++            } else if blockArray[block.column, block.row] != nil {
++                return true
 +            }
 +        }
-+        return false
-+    }
++    return false
++}
 ```
 
 At **#1** we added some logic to `newShape()` which may now detect the ending of a Switris game. The game ends when a new shape located at the designated starting location collides with existing blocks. This is the case where the player no longer has room to move the new shape, and we must destroy their tower of terror.
@@ -86,13 +87,14 @@ At **#2** we added a function for checking both block boundary conditions. This 
 
 Before proceeding, let's add some convenient helper functions to `Shape.swift` which will aide in `Switris`' ability to move and rotate each shape at will:
 
-```objc(Shape.swift)
+```swift(Shape.swift)
     final func rotateBlocks(orientation: Orientation) {
-        if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
-            for (idx, diff) in blockRowColumnTranslation.enumerate() {
-                blocks[idx].column = column + diff.columnDiff
-                blocks[idx].row = row + diff.rowDiff
-            }
+        guard let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] else {
+            return
+        }
+        for (idx, diff) in blockRowColumnTranslation.enumerate() {
+            blocks[idx].column = column + diff.columnDiff
+            blocks[idx].row = row + diff.rowDiff
         }
     }
 
@@ -135,20 +137,21 @@ Before proceeding, let's add some convenient helper functions to `Shape.swift` w
     }
 ```
 
-These new functions should be self explanatory. At **#3** we created a couple methods for rotating a shape one turn clockwise or counterclockwise, this will come in handy when testing a potential rotation and reverting it if it breaks the rules. Below that we've added convenience functions which allow us to move our shapes incrementally in any direction.
+These new functions should be self explanatory. At **#3** we created a couple methods for rotating a shape one turn clockwise or counterclockwise. These will come in handy when testing a potential rotation and reverting it if necessary. Below that we've added convenience functions which allow us to move our shapes incrementally in any direction.
 
 Let's put those new functions to good use by giving the user interface access to shape manipulation:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
     func detectIllegalPlacement() -> Bool {
-        if let shape = fallingShape {
-            for block in shape.blocks {
-                if block.column < 0 || block.column >= NumColumns
-                    || block.row < 0 || block.row >= NumRows {
-                    return true
-                } else if blockArray[block.column, block.row] != nil {
-                    return true
-                }
+        guard let shape = fallingShape else {
+            return false
+        }
+        for block in shape.blocks {
+            if block.column < 0 || block.column >= NumColumns
+                || block.row < 0 || block.row >= NumRows {
+                return true
+            } else if blockArray[block.column, block.row] != nil {
+                return true
             }
         }
         return false
@@ -156,68 +159,73 @@ Let's put those new functions to good use by giving the user interface access to
 
 // #4
 +    func dropShape() {
-+        if let shape = fallingShape {
-+            while detectIllegalPlacement() == false {
-+                shape.lowerShapeByOneRow()
-+            }
-+            shape.raiseShapeByOneRow()
-+            delegate?.gameShapeDidDrop(self)
++        guard let shape = fallingShape else {
++            return
 +        }
++        while detectIllegalPlacement() == false {
++            shape.lowerShapeByOneRow()
++        }
++        shape.raiseShapeByOneRow()
++        delegate?.gameShapeDidDrop(self)
 +    }
 
 // #5
 +    func letShapeFall() {
-+        if let shape = fallingShape {
-+            shape.lowerShapeByOneRow()
++        guard let shape = fallingShape else {
++            return
++        }
++        shape.lowerShapeByOneRow()
++        if detectIllegalPlacement() {
++            shape.raiseShapeByOneRow()
 +            if detectIllegalPlacement() {
-+                shape.raiseShapeByOneRow()
-+                if detectIllegalPlacement() {
-+                    endGame()
-+                } else {
-+                    settleShape()
-+                }
++                endGame()
 +            } else {
-+                delegate?.gameShapeDidMove(self)
-+                if detectTouch() {
-+                    settleShape()
-+                }
++                settleShape()
++            }
++        } else {
++            delegate?.gameShapeDidMove(self)
++            if detectTouch() {
++                settleShape()
 +            }
 +        }
 +    }
 
 // #6
 +    func rotateShape() {
-+        if let shape = fallingShape {
-+            shape.rotateClockwise()
-+            if detectIllegalPlacement() {
-+                shape.rotateCounterClockwise()
-+            } else {
-+                delegate?.gameShapeDidMove(self)
-+            }
++        guard let shape = fallingShape else {
++            return
 +        }
++        shape.rotateClockwise()
++        guard detectIllegalPlacement() == false else {
++            shape.rotateCounterClockwise()
++            return
++        }
++        delegate?.gameShapeDidMove(self)
 +    }
 
 // #7
 +    func moveShapeLeft() {
-+        if let shape = fallingShape {
-+            shape.shiftLeftByOneColumn()
-+            if detectIllegalPlacement() {
-+                shape.shiftRightByOneColumn()
-+                return
-+            }
-+            delegate?.gameShapeDidMove(self)
++        guard let shape = fallingShape else {
++            return
 +        }
++        shape.shiftLeftByOneColumn()
++        guard detectIllegalPlacement() == false else {
++            shape.shiftRightByOneColumn()
++            return
++        }
++        delegate?.gameShapeDidMove(self)
 +    }
 
 +    func moveShapeRight() {
-+        if let shape = fallingShape {
-+            shape.shiftRightByOneColumn()
-+            if detectIllegalPlacement() {
-+                shape.shiftLeftByOneColumn()
-+                return
-+            }
-+            delegate?.gameShapeDidMove(self)
++        guard let shape = fallingShape else {
++            return
 +        }
++        shape.shiftRightByOneColumn()
++        guard detectIllegalPlacement() == false else {
++            shape.shiftLeftByOneColumn()
++            return
++        }
++        delegate?.gameShapeDidMove(self)
 +    }
 ```
 
@@ -233,26 +241,28 @@ Lastly, the player will enjoy the privilege of moving the shape either leftwards
 
 I bet you're tired of looking at those errors, let's fix them by adding the missing functions:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
 // #8
 +    func settleShape() {
-+        if let shape = fallingShape {
-+            for block in shape.blocks {
-+                blockArray[block.column, block.row] = block
-+            }
-+            fallingShape = nil
-+            delegate?.gameShapeDidLand(self)
++        guard let shape = fallingShape else {
++            return
 +        }
++        for block in shape.blocks {
++            blockArray[block.column, block.row] = block
++        }
++        fallingShape = nil
++        delegate?.gameShapeDidLand(self)
 +    }
 
 // #9
 +    func detectTouch() -> Bool {
-+        if let shape = fallingShape {
-+            for bottomBlock in shape.bottomBlocks {
-+                if bottomBlock.row == NumRows - 1 ||
-+                    blockArray[bottomBlock.column, bottomBlock.row + 1] != nil {
-+                        return true
-+                }
++        guard let shape = fallingShape else {
++            return false
++        }
++        for bottomBlock in shape.bottomBlocks {
++            if bottomBlock.row == NumRows - 1
++                || blockArray[bottomBlock.column, bottomBlock.row + 1] != nil {
++                    return true
 +            }
 +        }
 +        return false
@@ -263,13 +273,14 @@ I bet you're tired of looking at those errors, let's fix them by adding the miss
 +    }
 
     func dropShape() {
-        if let shape = fallingShape {
-            while detectIllegalPlacement() == false {
-                shape.lowerShapeByOneRow()
-            }
-            shape.raiseShapeByOneRow()
-            delegate?.gameShapeDidDrop(self)
+        guard let shape = fallingShape else {
+            return
         }
+        while detectIllegalPlacement() == false {
+            shape.lowerShapeByOneRow()
+        }
+        shape.raiseShapeByOneRow()
+        delegate?.gameShapeDidDrop(self)
     }
 ```
 
@@ -281,7 +292,7 @@ At **#8**, `settleShape()` adds the falling shape to the collection of blocks ma
 
 Most, if not all games involve some sort of scoring mechanism; a means by which to garner points. Yes, even a game as sophisticated and well-traveled as Swiftris must admit that its players feed off of small psychological rewards, meaningless as they may be. Let's have the `Swiftris` class track the player's current score and level them up as they reach digital milestones:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
  let PreviewColumn = 12
  let PreviewRow = 1
 
@@ -291,25 +302,23 @@ Most, if not all games involve some sort of scoring mechanism; a means by which 
  protocol SwiftrisDelegate {
 ```
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
     var blockArray:Array2D<Block>
     var nextShape:Shape?
     var fallingShape:Shape?
     var delegate:SwiftrisDelegate?
 
-+   var score:Int
-+   var level:Int
++   var score = 0
++   var level = 1
 
     init() {
-+       score = 0
-+       level = 1
         fallingShape = nil
         nextShape = nil
         blockArray = Array2D<Block>(columns: NumColumns, rows: NumRows)
     }
 ```
 
-```objc(Switris.swift)
+```swift(Switris.swift)
     func endGame() {
 +        score = 0
 +        level = 1
@@ -319,7 +328,7 @@ Most, if not all games involve some sort of scoring mechanism; a means by which 
 
 We added a couple variables to help us keep track of the player's progress: `score` and `level`. Score represents their cumulative point total. Level represents which level of Swiftris they're playing on. We'll need a function capable of deducing when the player has formed a solid horizontal line; that's how a player earns points in `Swiftris`:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
      func endGame() {
         score = 0
         level = 1
@@ -333,9 +342,10 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +            var rowOfBlocks = Array<Block>()
 // #11
 +            for column in 0..<NumColumns {
-+                if let block = blockArray[column, row] {
-+                    rowOfBlocks.append(block)
++                guard let block = blockArray[column, row] else {
++                    continue
 +                }
++                rowOfBlocks.append(block)
 +            }
 +            if rowOfBlocks.count == NumColumns {
 +                removedLines.append(rowOfBlocks)
@@ -362,16 +372,17 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +            var fallenBlocksArray = Array<Block>()
 // #14
 +            for var row = removedLines[0][0].row - 1; row > 0; row-- {
-+                if let block = blockArray[column, row] {
-+                    var newRow = row
-+                    while (newRow < NumRows - 1 && blockArray[column, newRow + 1] == nil) {
-+                        newRow++
-+                    }
-+                    block.row = newRow
-+                    blockArray[column, row] = nil
-+                    blockArray[column, newRow] = block
-+                    fallenBlocksArray.append(block)
++                guard let block = blockArray[column, row] else {
++                    continue
 +                }
++                var newRow = row
++                while (newRow < NumRows - 1 && blockArray[column, newRow + 1] == nil) {
++                    newRow++
++                }
++                block.row = newRow
++                blockArray[column, row] = nil
++                blockArray[column, newRow] = block
++                fallenBlocksArray.append(block)
 +            }
 +            if fallenBlocksArray.count > 0 {
 +                fallenBlocks.append(fallenBlocksArray)
@@ -383,7 +394,7 @@ We added a couple variables to help us keep track of the player's progress: `sco
 
 This looks like a long and unwieldy function, so let's walk through it like we would through tall grass; holding hands and wearing overalls. At **#10**, we defined a function which returns yet another tuple. This time it's composed of two arrays: `linesRemoved` and `fallenBlocks`. `linesRemoved` maintains each row of blocks which the user has filled in.
 
-At **#11** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`, `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set - `10` blocks in total - it counts that as a removed line and adds it to the return variable.
+At **#11** we use a `for` loop  which iterates from `0` all the way up to, but not including `NumColumns`, `0` to `9`. This `for` loop adds every block in a given row to a local array variable named `rowOfBlocks`. If it ends up with a full set, `10` blocks in total, it counts that as a removed line and adds it to the return variable.
 
 At **#12** we check and see if we recovered any lines at all, if not, we return empty arrays.
 
@@ -399,16 +410,17 @@ Woo, that was a doozy… Let's take a break by enjoying some cuteness:
 
 `Swiftris` is almost ready, it just needs one small function which will allow the user interface to remove the blocks and send them straight into the digital abyss:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
 +    func removeAllBlocks() -> Array<Array<Block>> {
 +        var allBlocks = Array<Array<Block>>()
 +        for row in 0..<NumRows {
 +            var rowOfBlocks = Array<Block>()
 +            for column in 0..<NumColumns {
-+                if let block = blockArray[column, row] {
-+                    rowOfBlocks.append(block)
-+                    blockArray[column, row] = nil
++                guard let block = blockArray[column, row] else {
++                    continue
 +                }
++                rowOfBlocks.append(block)
++                blockArray[column, row] = nil
 +            }
 +            allBlocks.append(rowOfBlocks)
 +        }
@@ -422,12 +434,12 @@ This function loops through and creates rows of blocks in order for the game sce
 
 It's time to have `GameViewController` implement `SwiftrisDelegate` and begin reacting to changes in `Swiftris`' state:
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
 -class GameViewController: UIViewController {
 +class GameViewController: UIViewController, SwiftrisDelegate {
 ```
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -458,7 +470,7 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
     }
 ```
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
      func didTick() {
 // #15
 +        swiftris.letShapeFall()
@@ -468,13 +480,14 @@ It's time to have `GameViewController` implement `SwiftrisDelegate` and begin re
 
 +    func nextShape() {
 +        let newShapes = swiftris.newShape()
-+        if let fallingShape = newShapes.fallingShape {
-+            self.scene.addPreviewShapeToScene(newShapes.nextShape!) {}
-+            self.scene.movePreviewShape(fallingShape) {
++        guard let fallingShape = newShapes.fallingShape else {
++            return
++        }
++        self.scene.addPreviewShapeToScene(newShapes.nextShape!) {}
++        self.scene.movePreviewShape(fallingShape) {
 // #16
-+                self.view.userInteractionEnabled = true
-+                self.scene.startTicking()
-+            }
++            self.view.userInteractionEnabled = true
++            self.scene.startTicking()
 +        }
 +    }
 

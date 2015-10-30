@@ -10,7 +10,7 @@ Before we start playing with blocks, you should know the tools we'll be using: S
 
 ### Swift
 
-Swift is Apple's latest programming language. In time it will replace Objective-C as the primary language to write iPhone and Macintosh applications with. We wrote Swiftris entirely in Swift and this book will present a wide variety of the language's capabilities.
+Swift is Apple's latest programming language. In time it will replace Objective-C as the primary language for iOS and Mac apps. We wrote Swiftris entirely in Swift and this book will present a wide variety of the language's capabilities.
 
 If you are not a programmer, *do not worry*. Regardless of skill level, you will have your own copy of Swiftris after completing this guide. This book does not intend to teach you the language in its entirety. We cover most aspects of it in brief and supplement with external resources.
 
@@ -20,10 +20,10 @@ SpriteKit is a set of APIs provided by the iOS SDK (software development kit) wh
 
 ### Xcode
 
-Swiftris requires Xcode 7, [download it](https://developer.apple.com/xcode/downloads/) before continuing.
+[Download Xcode 7](https://developer.apple.com/xcode/downloads/) before continuing.
 
 While it's not required for this book, you may want to consider signing up for the [iOS Developer Program](https://developer.apple.com/programs/ios/). We think the $99 annual fee is wholly worthwhile: it provides access to yet-to-be public software updates and allows you to publish apps to your iPhone and the App Store.
 
 Once you have Xcode downloaded and installed, you are ready to move to the next chapter.
 
->**We wrote Swiftris for Xcode 7.1.** Attempting to follow this tutorial with any version of Xcode earlier than 7.1 may result in syntax or interface errors.
+>**We wrote Swiftris for Xcode 7.1.** Attempting to follow this tutorial with any version of Xcode other than 7.1 may result in syntax or interface errors.

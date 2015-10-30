@@ -36,7 +36,7 @@ Choose **Swift** and press **Next**. Name the file, `Array2D` and click **Create
 
 The file should automatically open in the editing window. Replace the generated content with the following:
 
-```objc(Array2D.swift)
+```swift(Array2D.swift)
 -import Foundation
 
 // #1
@@ -79,7 +79,7 @@ An optional value is just that, optional. Optional variables may or may not cont
 
 During our initialization at **#3**, we instantiate our internal `array` structure with a size of `rows` x `columns`. This guarantees that `Array2D` can store all the objects our game board requires, 200 in our case.
 
-[Go here if you're yearning to learn more about Swift arrays.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Array.html)
+[Go here if you're yearning to learn more about Swift arrays.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/CollectionTypes.html#//apple_ref/doc/uid/TP40014097-CH8-ID107)
 
 And at **#4** we create a custom subscript for `Array2D`. We mentioned earlier that we wanted to have a subscript capable of supporting `array[column, row]`, this accomplishes that. The getter is self-explanatory. To get the value at a given location we need to multiply the provided `row` by the class variable `columns`, then add the column number to reach the final destination.
 

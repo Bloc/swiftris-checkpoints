@@ -51,7 +51,7 @@ Make sure to select the **Weak** option for **Storage**. Press connect. Repeat t
 
 To make Swiftris truly great, it will need one thing: animations so explosive you have to walk away from them without looking back. Let's write some code which will drop our fallen blocks and blast destroyed blocks into the nebulous void:
 
-```objc(GameScene.swift)
+```swift(GameScene.swift)
 // #1
 +    func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:() -> ()) {
 +        var longestDuration: NSTimeInterval = 0
@@ -131,7 +131,7 @@ Lastly, at **#7** we run the `completion` action after a duration matching the t
 
 Remember those wonderful mp3 files we imported eons ago? We're going to put those to use. Add a couple lines to your `GameScene` file to support sound playback as well as an amazing theme song.
 
-```objc(GameScene.swift)
+```swift(GameScene.swift)
         shapeLayer.position = LayerPosition
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
@@ -159,7 +159,7 @@ Our entire office gets that boom, boom pow when an eager programmer reaches thei
 
 All we need now is to hook up our logic and scene together to make a beautiful game:
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     func gameDidBegin(swiftris: Swiftris) {
 +       levelLabel.text = "\(swiftris.level)"
 +       scoreLabel.text = "\(swiftris.score)"
@@ -178,7 +178,7 @@ All we need now is to hook up our logic and scene together to make a beautiful g
 
 When the game begins, we reset the score and level labels as well as the speed at which the ticks occur, beginning with `TickLengthLevelOne`.
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     func gameDidEnd(swiftris: Swiftris) {
         view.userInteractionEnabled = false
         scene.stopTicking()
@@ -191,7 +191,7 @@ When the game begins, we reset the score and level labels as well as the speed a
 
 After the game ends, we'll play the designated game over sound; *that's a must*. Then we destroy the remaining blocks on screen before starting a brand new game with no delay. The show must go on.
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     func gameDidLevelUp(swiftris: Swiftris) {
 +        levelLabel.text = "\(swiftris.level)"
 +        if scene.tickLengthMillis >= 100 {
@@ -205,7 +205,7 @@ After the game ends, we'll play the designated game over sound; *that's a must*.
 
 Each time the player levels up, we'll decrease the tick interval. At first, each level will decrease it by `100` milliseconds, but as it progresses it will go even faster, and topping off at `50` milliseconds between ticks. Lastly, we play a congratulatory level up sound. We have to reward players with *something*, after all.
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     func gameShapeDidDrop(swiftris: Swiftris) {
         scene.stopTicking()
         scene.redrawShape(swiftris.fallingShape!) {
@@ -217,7 +217,7 @@ Each time the player levels up, we'll decrease the tick interval. At first, each
 
 Just a couple small changes here, but it's the little details in life that matter. Letting the player see and *hear* the result of their efforts as well is like giving them the virtual proud father figure they never had.
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
     func gameShapeDidLand(swiftris: Swiftris) {
         scene.stopTicking()
 -       nextShape()

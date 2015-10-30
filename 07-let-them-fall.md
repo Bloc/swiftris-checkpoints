@@ -7,25 +7,23 @@
 
 We've worked pretty hard on preparing our blocks and shapes, let's just make them fall already! Thankfully, this just requires a bit of meaningful code before we can witness it in Swiftris! Let's begin by adding some helper methods to `Shape.swift` which will allow us to establish and alter our shape's location:
 
-```objc(Shape.swift)
+```swift(Shape.swift)
     final func initializeBlocks() {
-        if let blockRowColumnTranslations = blockRowColumnPositions[orientation] {
-            for i in 0..<blockRowColumnTranslations.count {
-                let blockRow = row + blockRowColumnTranslations[i].rowDiff
-                let blockColumn = column + blockRowColumnTranslations[i].columnDiff
-                let newBlock = Block(column: blockColumn, row: blockRow, color: color)
-                blocks.append(newBlock)
-            }
+        guard let blockRowColumnTranslations = blockRowColumnPositions[orientation] else {
+            return
+        }
+        blocks = blockRowColumnTranslations.map { (diff) -> Block in
+            return Block(column: column + diff.columnDiff, row: row + diff.rowDiff, color: color)
         }
     }
-
 +    final func rotateBlocks(orientation: Orientation) {
-+        if let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] {
++        guard let blockRowColumnTranslation:Array<(columnDiff: Int, rowDiff: Int)> = blockRowColumnPositions[orientation] else {
++            return
++        }
 // #1
-+            for (idx, diff) in blockRowColumnTranslation.enumerate() {
-+                blocks[idx].column = column + diff.columnDiff
-+                blocks[idx].row = row + diff.rowDiff
-+            }
++        for (idx, diff) in blockRowColumnTranslation.enumerate() {
++            blocks[idx].column = column + diff.columnDiff
++            blocks[idx].row = row + diff.rowDiff
 +        }
 +    }
 
@@ -71,7 +69,9 @@ We've worked pretty hard on preparing our blocks and shapes, let's just make the
 +    }
 ```
 
-At **#1** we introduce the `enumerate` function. This allows us to iterate through an array object by defining an index variable, `idx`, as well as the contents at that index, `diff`, which refers to `(columnDiff:Int, rowDiff:Int)`. This saves us the added step of recovering it from the array, `let tuple = blockRowColumnTranslation[idx]`. We loop through the blocks and assign them their row and column based on the translations provided by the Tetromino subclass.
+At **#1** we introduce the `enumerate` function. This allows us to iterate through an array object by defining an index variable, `idx`, as well as the contents at that index, `diff`, which refers to `(columnDiff:Int, rowDiff:Int)`.
+
+This saves us the added step of recovering it from the array, `let tuple = blockRowColumnTranslation[idx]`. We loop through the blocks and assign them their row and column based on the translations provided by the Tetromino subclass.
 
 At **#2**, we've included a simple `shiftBy(columns: Int, rows: Int)` method which will adjust each row and column by `rows` and `columns`, respectively.
 
@@ -81,7 +81,7 @@ At **#4** we've created a method to generate a random Tetromino shape and you ca
 
 We'll need a class that manages Swiftris' game logic, the brains behind the entire Swiftris operation. We could name this something clever like `GameMaster`, `Blocketeer`, or `TetrominosPizza`, but instead, we'll create an anticlimactic file named `Swiftris.swift` and replace its contents with the following:
 
-```objc(Swiftris.swift)
+```swift(Swiftris.swift)
 -import Foundation
 // #5
 +let NumColumns = 10
@@ -126,7 +126,7 @@ At **#6**, we have a method which assigns `nextShape`, our preview shape,  as `f
 
 It's time to work with visuals again, let's dig into precisely how we're going to display these pieces on screen by adding a couple methods to `GameScene.swift`
 
-```objc(GameScene.swift)
+```swift(GameScene.swift)
 import SpriteKit
 
 // #7
@@ -174,12 +174,12 @@ class GameScene: SKScene {
 
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        if lastTick == nil {
+        guard let lastTick = lastTick else {
             return
         }
-        var timePassed = lastTick!.timeIntervalSinceNow * -1000.0
+        let timePassed = lastTick.timeIntervalSinceNow * -1000.0
         if timePassed > tickLengthMillis {
-            lastTick = NSDate()
+            self.lastTick = NSDate()
             tick?()
         }
     }
@@ -194,8 +194,8 @@ class GameScene: SKScene {
 
 // #9
 +    func pointForColumn(column: Int, row: Int) -> CGPoint {
-+        let x: CGFloat = LayerPosition.x + (CGFloat(column) * BlockSize) + (BlockSize / 2)
-+        let y: CGFloat = LayerPosition.y - ((CGFloat(row) * BlockSize) + (BlockSize / 2))
++        let x = LayerPosition.x + (CGFloat(column) * BlockSize) + (BlockSize / 2)
++        let y = LayerPosition.y - ((CGFloat(row) * BlockSize) + (BlockSize / 2))
 +        return CGPointMake(x, y)
 +    }
 
@@ -269,7 +269,7 @@ This small design choice lets the player ignore the preview piece if they so cho
 
 Our drawing layer is ready, our logic layer is ready, but now we need to connect the two with our user interface class, `GameViewController`:
 
-```objc(GameViewController.swift)
+```swift(GameViewController.swift)
 import UIKit
 import SpriteKit
 

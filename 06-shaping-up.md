@@ -7,7 +7,7 @@
 
 Without shape, our blocks are aimless colored squares longing for purpose in their short-lived binary lives. Let's put them to use by creating a `Shape` class. `Shape` will define the recognizable [Tetromino](http://en.wikipedia.org/wiki/Tetromino) pieces we all know and love. You know the drill; create a new file named `Shape.swift` and replace its contents with the following:
 
-```objc(Shape.swift)
+```swift(Shape.swift)
 -import Foundation
 +import SpriteKit
 
@@ -54,7 +54,7 @@ At 0˚ the piece is at origin and as it rotates clockwise its degree advances al
 
 Let's write the shape class itself.
 
-```objc(Shape.swift)
+```swift(Shape.swift)
 +// The number of total shape varieties
 +let NumShapeTypes: UInt32 = 7
 
@@ -88,10 +88,10 @@ Let's write the shape class itself.
 +    }
 // #5
 +    var bottomBlocks:Array<Block> {
-+        if let bottomBlocks = bottomBlocksForOrientations[orientation] {
-+            return bottomBlocks
++        guard let bottomBlocks = bottomBlocksForOrientations[orientation] else {
++            return []
 +        }
-+        return []
++        return bottomBlocks
 +    }
 
 +    // Hashable
@@ -128,20 +128,20 @@ Your project won't compile at the moment and you will certainly see some errors,
 
 **#2**, `blockRowColumnPositions` defines a computed **Dictionary**. We define a dictionary with square braces, `[…]`, and use it to map one object to another. The first object type listed defines the **key** and the second, a **value**. Keys map one-to-one with values and duplicate keys may not exist.
 
-[Peruse Swift Dictionary details here.](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/Dictionary.html)
+[Peruse Swift Dictionary details here.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/CollectionTypes.html#//apple_ref/doc/uid/TP40014097-CH8-ID113)
 
 We access dictionary values similarly to those of an array by employing square braces. Our subscripts are now **keys**, and in the case of `blockRowColumnPositions`, they are `Orientation` objects. The values found in this dictionary are peculiar as well, `Array<(columnDiff: Int, rowDiff: Int)>`. What the heck is that?
 
 It's a regular Swift array, its type is a **tuple**, pronounced *too-pūll*. A tuple is perfect for passing or returning more than one variable without defining a custom struct. Our tuple has two pieces of data but the number allowed is indefinite. Both pieces of data are of type `Int`, the first is `columnDiff` and the second is `rowDiff`. Here's a sample accessor statement for this dictionary:
 
-```objc
+```swift
 let arrayOfDiffs = blockRowColumnPositions[Orientation.0]!
 let columnDifference = arrayOfDiffs[0].columnDiff
 ```
 
 Elements found within a dictionary are optional by default, so we must unwrap them using the `!` symbol. To access the first element's `columnDiff` value, we index the array at `0` to recover the first tuple and use dot syntax to retrieve our desired variable.
 
-[Can't get enough of tuples? We know that feeling.](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Types.html)
+[Can't get enough of tuples? We know that feeling.](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Types.html#//apple_ref/doc/uid/TP40014097-CH31-ID448)
 
 Both **#2** and **#3** return empty values, they're meant for subclasses to provide meaningful data later. At **#4** we wrote a computed property that returns the bottom blocks of the shape at its current orientation. This will be useful later when our blocks get physical and start touching walls and each other.
 
@@ -149,25 +149,22 @@ At **#5** we use the `reduce<S : Sequence, U>(sequence: S, initial: U, combine: 
 
 At **#6** we introduce a special initializer. A `convenience` initializer must call down to a standard initializer or otherwise your class will fail to compile. We've placed this one here to simplify the initialization process for users of the `Shape` class. It assigns the given `row` and `column` values while generating a random color and a random orientation.
 
-[We get it, it'd be _convenient_ to read more about those.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
+[We get it, it'd be _convenient_ to read more about those.](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID216)
 
 Your `Shape` class has some build errors, let's fix them.
 
-```objc(Shape.swift)
+```swift(Shape.swift)
     convenience init(column:Int, row:Int) {
         self.init(column:column, row:row, color:BlockColor.random(), orientation:Orientation.random())
     }
-
 // #7
 +    final func initializeBlocks() {
++        guard let blockRowColumnTranslations = blockRowColumnPositions[orientation] else {
++            return
++        }
 // #8
-+        if let blockRowColumnTranslations = blockRowColumnPositions[orientation] {
-+            for i in 0..<blockRowColumnTranslations.count {
-+                let blockRow = row + blockRowColumnTranslations[i].rowDiff
-+                let blockColumn = column + blockRowColumnTranslations[i].columnDiff
-+                let newBlock = Block(column: blockColumn, row: blockRow, color: color)
-+                blocks.append(newBlock)
-+            }
++        blocks = blockRowColumnTranslations.map { (diff) -> Block in
++            return Block(column: column + diff.columnDiff, row: row + diff.rowDiff, color: color)
 +        }
 +    }
 }
@@ -179,16 +176,9 @@ func ==(lhs: Shape, rhs: Shape) -> Bool {
 
 At **#7** we defined a `final` function which means it cannot be overridden by subclasses. `Shape` and its subclasses must use this implementation of `initializeBlocks()`.
 
-At **#8** we introduced conditional assignments. This `if` conditional first attempts to assign an array into `blockRowColumnTranslations` after extracting it from the computed dictionary property. If one is *not* found, the `if` block is not executed.
+At **#8**, we use the `map` function to create the `blocks` array. `map` performs a specific task: it executes the provided code block for each object found in the array, and in our case, each block must return a `Block` object.
 
-The following code sample is equal to what we've written:
-
-```objc
-let blockRowColumnTranslations = blockRowColumnPositions[orientation]
-if blockRowColumnTranslations != nil {
-    // Code…
-}
-```
+`map` adds each `Block` returned by our code to the `blocks` array. `map` lets us create one array after looping over the contents of another.
 
 ### Subclasses
 
@@ -196,7 +186,7 @@ You've written a solid `Shape` class, yet it hasn't truly defined any possible T
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-square.png)</center>
 
-```objc(SquareShape.swift)
+```swift(SquareShape.swift)
 -import Foundation
 +class SquareShape:Shape {
 +    /*
@@ -242,7 +232,7 @@ You have the opportunity to write the remaining shapes yourself, they are: `TSha
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-t.png)</center>
 
-```objc(TShape.swift)
+```swift(TShape.swift)
 class TShape:Shape {
     /*
     Orientation 0
@@ -294,7 +284,7 @@ class TShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-line.png)</center>
 
-```objc(LineShape.swift)
+```swift(LineShape.swift)
 class LineShape:Shape {
     /*
         Orientations 0 and 180:
@@ -336,7 +326,7 @@ class LineShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-l.png)</center>
 
-```objc(LShape.swift)
+```swift(LShape.swift)
 class LShape:Shape {
     /*
 
@@ -391,7 +381,7 @@ class LShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-j.png)</center>
 
-```objc(JShape.swift)
+```swift(JShape.swift)
 class JShape:Shape {
     /*
 
@@ -445,7 +435,7 @@ class JShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-s.png)</center>
 
-```objc(SShape.swift)
+```swift(SShape.swift)
 class SShape:Shape {
     /*
 
@@ -497,7 +487,7 @@ class SShape:Shape {
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/07-giving-shape-z.png)</center>
 
-```objc(ZShape.swift)
+```swift(ZShape.swift)
 class ZShape:Shape {
     /*
 
