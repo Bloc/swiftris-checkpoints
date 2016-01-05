@@ -56,8 +56,8 @@ To make Swiftris truly great, it will need one thing: animations so explosive yo
 +    func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:() -> ()) {
 +        var longestDuration: NSTimeInterval = 0
 // #2
-+        for (columnIdx, column) in enumerate(fallenBlocks) {
-+            for (blockIdx, block) in enumerate(column) {
++        for (columnIdx, column) in fallenBlocks.enumerate() {
++            for (blockIdx, block) in column.enumerate() {
 +                let newPosition = pointForColumn(block.column, row: block.row)
 +                let sprite = block.sprite!
 // #3
@@ -73,8 +73,8 @@ To make Swiftris truly great, it will need one thing: animations so explosive yo
 +            }
 +        }
 
-+        for (rowIdx, row) in enumerate(linesToRemove) {
-+            for (blockIdx, block) in enumerate(row) {
++        for rowToRemove in linesToRemove {
++            for block in rowToRemove {
 // #4
 +                let randomRadius = CGFloat(UInt(arc4random_uniform(400) + 100))
 +                let goLeft = arc4random_uniform(100) % 2 == 0
