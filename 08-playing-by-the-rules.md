@@ -297,7 +297,7 @@ Most, if not all games involve some sort of scoring mechanism; a means by which 
  let PreviewRow = 1
 
 +let PointsPerLine = 10
-+let LevelThreshold = 1000
++let LevelThreshold = 500
 
  protocol SwiftrisDelegate {
 ```
