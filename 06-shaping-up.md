@@ -86,7 +86,7 @@ Let's write the shape class itself.
 +    var bottomBlocksForOrientations: [Orientation: Array<Block>] {
 +        return [:]
 +    }
-// #5
+// #4
 +    var bottomBlocks:Array<Block> {
 +        guard let bottomBlocks = bottomBlocksForOrientations[orientation] else {
 +            return []
@@ -96,7 +96,7 @@ Let's write the shape class itself.
 
 +    // Hashable
 +    var hashValue:Int {
-// #6
+// #5
 +        return blocks.reduce(0) { $0.hashValue ^ $1.hashValue }
 +    }
 
