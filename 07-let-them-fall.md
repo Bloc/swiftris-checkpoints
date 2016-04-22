@@ -232,7 +232,7 @@ class GameScene: SKScene {
 +            let moveToAction:SKAction = SKAction.moveTo(moveTo, duration: 0.2)
 +            moveToAction.timingMode = .EaseOut
 +            sprite.runAction(
-+                SKAction.group([moveToAction, SKAction.fadeAlphaTo(1.0, duration: 0.2)]), completion:nil)
++                SKAction.group([moveToAction, SKAction.fadeAlphaTo(1.0, duration: 0.2)]), completion: {})
 +        }
 +        runAction(SKAction.waitForDuration(0.2), completion: completion)
 +    }

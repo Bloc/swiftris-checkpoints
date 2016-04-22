@@ -136,7 +136,7 @@ Remember those wonderful mp3 files we imported eons ago? We're going to put thos
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
 // #8
-+       runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
++       runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("Sounds/theme.mp3", waitForCompletion: true)))
     }
 
 // #9
@@ -182,8 +182,8 @@ When the game begins, we reset the score and level labels as well as the speed a
     func gameDidEnd(swiftris: Swiftris) {
         view.userInteractionEnabled = false
         scene.stopTicking()
-+       scene.playSound("gameover.mp3")
-+       scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: Array<Array<Block>>()) {
++       scene.playSound("Sounds/gameover.mp3")
++       scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: swiftris.removeAllBlocks()) {
 +           swiftris.beginGame()
 +       }
     }
@@ -199,7 +199,7 @@ After the game ends, we'll play the designated game over sound; *that's a must*.
 +        } else if scene.tickLengthMillis > 50 {
 +            scene.tickLengthMillis -= 50
 +        }
-+        scene.playSound("levelup.mp3")
++        scene.playSound("Sounds/levelup.mp3")
     }
 ```
 
@@ -211,7 +211,7 @@ Each time the player levels up, we'll decrease the tick interval. At first, each
         scene.redrawShape(swiftris.fallingShape!) {
             swiftris.letShapeFall()
         }
-+       scene.playSound("drop.mp3")
++       scene.playSound("Sounds/drop.mp3")
     }
 ```
 
@@ -230,7 +230,7 @@ Just a couple small changes here, but it's the little details in life that matte
 // #11
 +               self.gameShapeDidLand(swiftris)
 +           }
-+           scene.playSound("bomb.mp3")
++           scene.playSound("Sounds/bomb.mp3")
 +       } else {
 +           nextShape()
 +       }
