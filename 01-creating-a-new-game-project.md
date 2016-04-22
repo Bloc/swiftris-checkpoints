@@ -30,7 +30,7 @@ The next window beckons you to customize options for your project. Fill out the 
 
 Press **Next** and Xcode will ask where to place your new project. Choose a magical, wonderful directory, make sure to check **Create Git repository**, and then click **Create**.
 
-After saving it should open Xcode to your brand new Swiftris project, specifically to the project properties screen. On this screen, check off the **Portrait** option under **Device Orientation:**. This file is automatically saved so you won't have to do anything further.
+After saving it should open Xcode to your brand new Swiftris project, specifically to the project properties screen. On this screen, make sure that the **Portrait** option under **Device Orientation:** is checked. This file is automatically saved so you won't have to do anything further.
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/02-creating-a-new-game-project-portrait-setting.png)</center>
 
