@@ -338,7 +338,7 @@ We added a couple variables to help us keep track of the player's progress: `sco
 // #10
 +    func removeCompletedLines() -> (linesRemoved: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>) {
 +        var removedLines = Array<Array<Block>>()
-+        for var row = NumRows - 1; row > 0; row-- {
++        for var row = NumRows - 1; row > 0; row -= 1 {
 +            var rowOfBlocks = Array<Block>()
 // #11
 +            for column in 0..<NumColumns {
@@ -371,13 +371,13 @@ We added a couple variables to help us keep track of the player's progress: `sco
 +        for column in 0..<NumColumns {
 +            var fallenBlocksArray = Array<Block>()
 // #14
-+            for var row = removedLines[0][0].row - 1; row > 0; row-- {
++            for var row = removedLines[0][0].row - 1; row > 0; row -= 1 {
 +                guard let block = blockArray[column, row] else {
 +                    continue
 +                }
 +                var newRow = row
 +                while (newRow < NumRows - 1 && blockArray[column, newRow + 1] == nil) {
-+                    newRow++
++                    newRow += 1
 +                }
 +                block.row = newRow
 +                blockArray[column, row] = nil
