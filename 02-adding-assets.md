@@ -14,7 +14,7 @@ When asked to confirm, make sure to choose **Move to trash**:
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-delete-gamescene-confirm.png)</center>
 
-To get rid of the aimless space ship once and for all, click the `Images.xcassets` folder and highlight the `Spaceship` entry, press the **delete** key to delete that sucker.
+To get rid of the aimless space ship once and for all, click the `Assets.xcassets` folder and highlight the `Spaceship` entry, press the **delete** key to delete that sucker.
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-delete-spaceship.png)</center>
 
@@ -133,9 +133,9 @@ To experience Swiftris in all its visual and auditory glory, we're going to need
 
 <center>![](http://bloc-books.s3.amazonaws.com/swiftris/03-adding-assets-copy-if-necessary.png)</center>
 
-Make sure to check the **Copy items if necessary** option. This will place a copy of the directory, and the sound files within it, into your Swiftris project and directory. Click **Finish**. Repeat this task with the **Sprites.atlas** folder. Next, select the images found within the **Images** directory and drag them into the **Supporting Files** folder found in Project Navigator.
+Make sure to check the **Copy items if necessary** option. This will place a copy of the directory, and the sound files within it, into your Swiftris project and directory. Click **Finish**. Repeat this task with the **Sprites.atlas** folder. Next, select the images found within the **Images** directory and drag them into the **Assets.xcassets** folder found in Project Navigator.
 
-Once again, make sure you've checked the **Copy items if needed** box. Lastly, click on **Images.xcassets** to open the window and highlight **AppIcon**. Drag and drop the appropriate **icon** file from the downloaded **Blocs** folder into its respective slot: 29pt, 40pt and 60pt.
+Once again, make sure you've checked the **Copy items if needed** box. Lastly, click on **Assets.xcassets** to open the window and highlight **AppIcon**. Drag and drop the appropriate **icon** file from the downloaded **Blocs** folder into its respective slot: 29pt, 40pt and 60pt.
 
 All this dragging and dropping has my clicking hand beat, let's just code already!
 
